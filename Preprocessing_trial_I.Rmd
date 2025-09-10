@@ -1,0 +1,143 @@
+---
+title: "Preprocessing_trial_I"
+output: html_document
+---
+
+```{r}
+library(haven)
+library(data.table)
+```
+
+# add needed packages 
+```{r}
+require(haven)
+```
+
+```{r}
+df <- fread("complete_MCI_data.csv")
+df1 <- as.data.frame(df)
+```
+
+# remove demo id from the dataset
+```{r}
+
+```
+
+# select the needed columns
+```{r}
+
+```
+
+# select the right devices, remove touch 
+```{r}
+
+```
+
+# remove non-english cases
+```{r}
+
+```
+
+# remove participants with less than 9 screens 
+```{r}
+
+```
+
+# remove cases with duplicated workerId - participants who went back in screens 
+```{r}
+
+```
+
+# merge two columns, e.g. id and screen
+```{r}
+
+```
+
+# remove resize events 
+```{r}
+rm_resizes <- 2               # Integer whether resizes should be removed from the
+# dataset.
+# 0: No
+# 1: Only questions with resizes
+# 2: All participants with at least one resize in
+#    the entire survey
+
+switch(rm_resizes,
+       '0'={
+         resize_mt_ids <- c()
+       },
+       '1'={
+         resize_mt_ids <- unique(dat$mt_id[which(dat$type=='resize')])
+       },
+       '2'={
+         resize_mt_ids <- unique(traces_uasids$mouseid[which(traces_uasids$workerId%in%dat$mt_id[which(dat$type=='resize')])])
+         resize_mt_ids <- unique(traces_uasids$workerId[which(traces_uasids$mouseid%in%resize_mt_ids)])
+         # resize_mt_ids <- unique(dat$mouseid[which(dat$type=='resize')])
+       },
+       {
+         print(paste0('The defined value for "rm_resizes" of ', rm_resizes, 
+                      ' does not make any sense... Buuuuh! Choose 0, 1, or 2. Using option 0 and continue.'))
+         resize_mt_ids <- c()
+       })
+
+# if(rm_resizes%in%c(1,2)) dat <- dat[which(!dat[, c('mt_id', 'mouseid')[rm_resizes]]%in%resize_mt_ids),]
+if(rm_resizes%in%c(1,2)) traces_uasids <- traces_uasids[which(!(traces_uasids$workerId%in%resize_mt_ids)),]
+```
+```{r}
+#' Add Two Numbers
+#'
+#' This function takes two numeric inputs and returns their sum.
+#'
+#' @param x A numeric value.
+#' @param y A numeric value.
+#' @return A numeric value equal to x + y.
+#' @examples
+#' add_numbers(2, 3)
+#' add_numbers(10, -5)
+#' @export
+add_numbers <- function(x, y) {
+  x + y
+}
+
+```
+
+```{r}
+rm_cases <- function(data, part_id = "mouseid", sess_id = "workerId", column_rm = "type", level_rm, criteria) {
+  
+  if (criteria == "1"){
+  
+  resize_mt_ids <- unique(data[[sess_id]][data[[column_rm]] == level_rm])  
+  new_data <- data[which(!(data[[sess_id]] %in% resize_mt_ids)),]
+  
+  return(resize_mt_ids)
+ 
+  } else if (criteria == "2"){
+    
+  resize_mt_ids <- unique(data[[part_id]][data[[column_rm]] == level_rm])  
+  new_data <- data[which(!(data[[part_id]] %in% resize_mt_ids)),]
+  
+  return(resize_mt_ids)  
+  
+  } 
+}
+```
+
+```{r}
+#unique(df[["mouseid"]][which(df[["workerId"]] %in% df[["workerId"]][df[["type"]] =='resize'])])
+```
+```{r}
+df[["mouseid"]][df[["type"]] =='resize']
+```
+
+```{r}
+rm_cases(data = df1, level_rm = "resize", criteria = 2)
+```
+
+```{r}
+unique(df$workerId[df$type == "resize"]) 
+
+df[,"type"]
+
+#unique(data$sess_id[which(data$column_rm == level_rm)])  
+```
+

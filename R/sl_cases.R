@@ -1,8 +1,7 @@
 #' Selects cases from data set 
 #'
-#' This function takes the data and the specified participant ID, session ID, the selected column,
-#' which entails the filter variable, the filter variable, the filter criteria and returns the filtered 
-#' data frame with the selected cases. 
+#' This function selects the specified cases based on the column and the level, return the
+#' new data frame. 
 #' 
 #' Can be used to select cases with e.g.:
 #'  - no touch device

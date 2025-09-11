@@ -24,7 +24,7 @@ mouse_class() function to remove the cases with less than 50 data points per ses
 rm_cases(data, column_rm = "userAgent_is_touch_capable", factor_rm = TRUE, criteria = 1)
 ```
 
-#### Remove cases where the window was resized
+#### Remove cases with resized window
 
 ... 
 ```R

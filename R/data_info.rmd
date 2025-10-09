@@ -1,0 +1,210 @@
+---
+title: "Data Description UAS"
+author: "Aida Kreider"
+date: "2025-10-01"
+output: pdf_document
+---
+
+## Data Description 
+
+This document entails the data description of the uas datasets. 
+
+### Load packages
+```{r}
+library(data.table)
+```
+
+Read in the uas dataset, this script is based on the end of 2024 uas dataset.
+
+```{r}
+df <- fread("../sample_data.csv")
+```
+
+This uas dataset includes 39 variables in total. 
+```{r}
+colnames(df)
+```
+## Part I: Personal info and paradata 
+
+The **V1** and the **id** are both the index columns, that indicate the order of the recorded data. This is useful, when administering data manipulation that might influence the order of the data. However, when working with the data on the person or screen level, the timestamps should be preferred.  
+
+**V1** starts the count at 0 (similar to the python indexing)
+
+```{r}
+df$V1[1:20]
+```
+
+**id** starts the count at 1
+```{r}
+df$id[1:20]
+```
+
+The **time** variable records the actual timestamp of the survey.  
+```{r}
+df$time[1:10]
+```
+
+Info about the survey host, which is always uas. 
+
+```{r}
+unique(df$host)
+```
+
+Both **session** and **workerId** are person identifiers, while **session** is unique to every person, **workerId** is additionally unique to every person and the screen in the survey. If the mouse movement is recorded for nine questions/screens in total, every person is expected to have nine unique workerIds.
+
+
+Both **session** and **workerId** are rather long identifier with 36 characters. 
+```{r}
+nchar(df$session[1])
+```
+
+```{r}
+nchar(df$workerId[1])
+```
+
+This sample dataset entails two people in total with 15 different screens. 
+
+```{r}
+length(unique(df$session))
+```
+
+```{r}
+length(unique(df$workerId))
+```
+
+The **paradataSession** tracks the beginning of a new screen tracking, every person has one **paradataSession** ID, similar to the **session** variable. This recording is sparse and only included when a new screen was loaded. 
+
+```{r}
+length(unique(df$paradataSession)) #three unique values because of empty entries. 
+```
+
+Every participants has an **uasID** as an unique identifier. This ID is created and used by the uas system and can be used to link data from different uas surveys. 
+
+```{r}
+length(unique(df$uasID))
+```
+
+The **uasScreen** variable entails the names of the screen/question, which the participants saw when the mouse movement was recorded. The questions (or screenshots of the questions) can then be linked to the mouse movement data. (Not included in every uas dataset, if missing check **dataSet**)
+
+```{r}
+unique(df$uasScreen)
+```
+
+The **count** simply counts the amount of entries per screen per person. 
+```{r}
+df$count[1:50]
+```
+
+The **type** variable gives information about the type of recorded paradata. Important types are "mousemove", "click", "resize". Every screen starts with count at zero and the init type. 
+```{r}
+unique(df$type)
+```
+
+The **timeStamp** is another important variable and records the time in milliseconds, when a new screen is loaded.
+
+```{r}
+df$timeStamp[1:20]
+```
+
+```{r}
+range(df$timeStamp, na.rm = TRUE)
+```
+
+The **dataSet** includes information about the screen and the uasID. Can also be retrieved individually from *uasScreen* and *uasID* in the newer datasets.
+
+```{r}
+df$dataSet[1]
+```
+
+## Part II: Region Information
+
+**Location** of the survey, i.e. survey link. 
+```{r}
+unique(df$location)
+```
+
+**Locale** variable has the location information.
+```{r}
+unique(df$locale)
+```
+
+**userAgent** information includes details about the Browser used, the operating system, and the rendering system. 
+```{r}
+unique(df$userAgent)
+```
+
+**timeZoneOffset** saves information about the deviation between the local time of the participants and the UTC time zone. 
+```{r}
+unique(df$timeZoneOffset)
+```
+
+## Part III: Screen Information of Participants
+
+ - **devicePixelRatio** - screen resolution     \
+ - **screenHeight** - total physical monitor height \
+ - **screenWidth** - total physical monitor width  \
+ - **innerHeight** - height of screen visible in browser  \
+ - **innerWidth** - width of screen visible in browser  \
+ - **scrollHeight** - total screen height  \
+ - **scrollWidth** - total screen width  \
+
+```{r warning=FALSE}
+range(df$devicePixelRatio, na.rm = TRUE)
+range(df$screenHeight, na.rm = TRUE)
+range(df$screenWidth, na.rm = TRUE)
+```
+
+```{r}
+range(df$innerHeight, na.rm = TRUE)
+range(df$innerWidth, na.rm = TRUE)
+```
+
+```{r}
+range(df$scrollHeight, na.rm = TRUE)
+range(df$scrollWidth, na.rm = TRUE)
+```
+
+**pageX** and **pageY** are both important variables and include the x- and y-coordinates of the mouse position relative to the whole screen. 
+
+```{r}
+range(df$pageX, na.rm = TRUE)
+range(df$pageY, na.rm = TRUE)
+```
+
+**clientX** and **clientY** are similar to the page variables, but they record the position of the mouse relative to the visible area. 
+
+```{r}
+range(df$clientX, na.rm = TRUE)
+range(df$clientY, na.rm = TRUE)
+```
+
+**readState** records the current stage of the request, usually not important for mmouse movement tracking. 
+```{r}
+unique(df$readyState)
+```
+
+## Part IV: User Agent Information
+
+ - **userAgent_os_family** - operating system  \
+ - **userAgent_browser_family** - browser used  \
+ - **userAgent_device_family** - device used  \
+```{r}
+unique(df$userAgent_os_family)
+unique(df$userAgent_browser_family)
+unique(df$userAgent_device_family)
+```
+
+True or False statements about the userAgent: \
+
+ - **userAgent_is_mobile** - is the device used mobile?  \
+ - **userAgent_is_pc** - is the device used a pc?  \
+ - **userAgent_is_tablet** - is the device used a tablet?  \
+ - **userAgent_is_touch_capable** - is the device used touch capable? \
+ 
+```{r}
+unique(df$userAgent_is_mobile)
+unique(df$userAgent_is_pc)
+unique(df$userAgent_is_tablet)
+unique(df$userAgent_is_touch_capable)
+```
+

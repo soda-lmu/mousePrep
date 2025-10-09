@@ -1,4 +1,4 @@
-#' Remove cases from data set 
+#' Remove cases from dataset 
 #'
 #' This function takes the data and the specified participant ID, session ID, the selected column,
 #' which entails the filter variable, the filter variable, the filter criteria and returns the filtered 

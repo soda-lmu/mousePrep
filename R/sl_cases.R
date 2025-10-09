@@ -1,4 +1,4 @@
-#' Selects cases from data set 
+#' Selects cases from dataset 
 #'
 #' This function selects the specified cases based on the column and the level, return the
 #' new data frame. 

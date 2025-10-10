@@ -178,7 +178,7 @@ range(df$clientX, na.rm = TRUE)
 range(df$clientY, na.rm = TRUE)
 ```
 
-**readState** records the current stage of the request, usually not important for mmouse movement tracking. 
+**readState** records the current stage of the request, usually not important for mouse movement tracking. 
 ```{r}
 unique(df$readyState)
 ```
@@ -196,10 +196,10 @@ unique(df$userAgent_device_family)
 
 True or False statements about the userAgent: \
 
- - **userAgent_is_mobile** - is the device used mobile?  \
- - **userAgent_is_pc** - is the device used a pc?  \
- - **userAgent_is_tablet** - is the device used a tablet?  \
- - **userAgent_is_touch_capable** - is the device used touch capable? \
+ - **userAgent_is_mobile** - was a mobile device used?  \
+ - **userAgent_is_pc** - was a pc used?  \
+ - **userAgent_is_tablet** - was a tablet used?  \
+ - **userAgent_is_touch_capable** - was the device used touch capable? \
  
 ```{r}
 unique(df$userAgent_is_mobile)

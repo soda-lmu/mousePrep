@@ -3,7 +3,8 @@
 #' This function returns a filtered dataset based on the maximum time spend on a question on 
 #' either participant or screen level. If the function should only consider the cases, leave 
 #' the participant ID empty and only fill screen ID. If the function should consider the time on 
-#' participant level, fill in both participant and screen ID.
+#' participant level, fill in both participant and screen ID. This would aggregate the time taken at 
+#' level of the participant. The uas dataset records time in milliseconds
 #' 
 #' Can be used to remove cases where time exceeded a certain threshold per question, e.g. 7 minutes. 
 #'

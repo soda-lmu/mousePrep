@@ -1,4 +1,4 @@
-Package: preprocessing_mouse
+Package: preprocessingmouse
 Title: Preprocessing Package for Mouse Movement Data
 Version: 0.1.0
 Date: 2025-09-11
@@ -14,15 +14,16 @@ Authors@R:
            email = ""),
     person(given = "Aida",
           family = "Kreider",
-          role = "aut",
+          role = c("aut",cre)
           email = "aida.kreider99@gmail.com")
   )
-Description: This package facilitates the preprocessing process of mouse movement data, specifically the 
-uas data. 
+Description: This package facilitates the preprocessing process of mouse movement data, specifically the uas data. 
 License: ? 
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
 Imports:
     haven
-    
+    dplyr
+    tidyr
+RoxygenNote: 7.3.3

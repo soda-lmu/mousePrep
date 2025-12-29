@@ -19,7 +19,6 @@
 #'                 For 2: Remove all data from the participant, where the criteria are met. 
 #' @return A filtered data frame with removed cases. 
 #' @examples
-#' rm_cases(data, factor_rm = "resize", criteria = 1)
 #' rm_cases(data, column_rm = "userAgent_is_touch_capable", factor_rm = TRUE, criteria = 1)
 #' @export
 

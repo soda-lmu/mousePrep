@@ -1,8 +1,9 @@
 #' Classification of touch/mouse users.
 #'
-#' This function selects cases based on the amount of recorded data points per session 
-#' per participant. Default value is >50 for mouse users and <10 for touch devices. Cases between 
-#' 10 and 50 data points can be manually inspected, e.g. by checking the trajectory plots.  
+#' This function is to filter mouse movement cases based on the amount of recorded data points per session 
+#' per participant using the timestamp in the dataset. Default value is >50 for mouse users and <10 for touch devices. Cases between 
+#' 10 and 50 data points can be manually inspected, e.g. by checking the trajectory plots. This means we consider mouse users with 
+#' less than or equal to 50 data points and greater than or equal to 10 data points for touch device users.  
 #' 
 #' Define only max_cutoff, when the questionable devices need to be removed, returns filtered dataset. 
 #' When min_cutoff is also specified, the cases in the specified range will be returned for further inspection.
@@ -19,7 +20,7 @@
 #' df_mv <- mouse_class(df_mv, max_cutoff = 50, min_cutoff = 10)
 #' @export
 
-mouse_class <- function(data, sess_id = "workerId", count_var = "timeStamp", max_cutoff = FALSE, min_cutoff = FALSE) {
+mouse_class <- function(data, sess_id = "workerId", count_var = "timeStamp", max_cutoff = 50, min_cutoff = 10) {
   
   # return a dataset with more than the number of specified cases in max_cutoff
   if (is.numeric(max_cutoff) && min_cutoff == FALSE) {

@@ -1,6 +1,6 @@
 #' Classification of touch/mouse users.
 #'
-#' This function is to filter mouse movement cases based on the amount of recorded data points per session 
+#' This function is to filter mouse movement cases based on the amount of recorded data points per screen
 #' per participant using the timestamp in the dataset. Default value is >50 for mouse users and <10 for touch devices. Cases between 
 #' 10 and 50 data points can be manually inspected, e.g. by checking the trajectory plots. This means we consider mouse users with 
 #' less than or equal to 50 data points and greater than or equal to 10 data points for touch device users.  
@@ -10,8 +10,8 @@
 #' When only min_cutoff is specified, the function returns the questionable devices only.  
 #'
 #' @param data A (sl_cases()) data frame with only mouse movement data. 
-#' @param sess_id The grouping variable, like a session or worker ID.
-#' @param count_var A column in the dataset used to count the cases per sess_id.
+#' @param screen_id The grouping variable, like a screen or worker ID.
+#' @param count_var A column in the dataset used to count the cases per screen_id.
 #' @param max_cutoff The cutoff value for mouse users. 
 #' @param min_cutoff the cutoff value for touch users, should not be the same as max_cutoff. 
 #' @return  
@@ -20,26 +20,26 @@
 #' df_mv <- mouse_class(df_mv, max_cutoff = 50, min_cutoff = 10)
 #' @export
 
-mouse_class <- function(data, sess_id = "workerId", count_var = "timeStamp", max_cutoff = 50, min_cutoff = 10) {
+mouse_class <- function(data, screen_id = "workerId", count_var = "timeStamp", max_cutoff = 50, min_cutoff = 10) {
   
   # return a dataset with more than the number of specified cases in max_cutoff
   if (is.numeric(max_cutoff) && min_cutoff == FALSE) {
-    # get the number of data point per session
-    event_counts <- by(data[[count_var]], data[[sess_id]], length)
+    # get the number of data point per screen
+    event_counts <- by(data[[count_var]], data[[screen_id]], length)
     event_counts <- data.frame(workerId = names(event_counts), event_counts = as.numeric(event_counts))
     
     # check which ids are larger than max_cutoff
     questionable_ids <- event_counts[which( event_counts$event_counts >= max_cutoff),]
     
     # filter these cases
-    traces_uasids <- data[which(data[[sess_id]] %in% questionable_ids$workerId),]
+    traces_uasids <- data[which(data[[screen_id]] %in% questionable_ids$workerId),]
     
     return(traces_uasids)
     
   # returns a dataset with questionable devices in the specified cutoff range for further testing 
   } else if (is.numeric(max_cutoff) && is.numeric(min_cutoff)){
-    # get the number of data point per session
-    event_counts <- by(data[[count_var]], data[[sess_id]], length)
+    # get the number of data point per screen
+    event_counts <- by(data[[count_var]], data[[screen_id]], length)
     event_counts <- data.frame(workerId = names(event_counts), event_counts = as.numeric(event_counts))
     
     # check which ids are in the specified range 
@@ -47,19 +47,19 @@ mouse_class <- function(data, sess_id = "workerId", count_var = "timeStamp", max
                                              event_counts$event_counts< max_cutoff),]
     
     # filter these cases
-    traces_uasids <- data[which(data[[sess_id]] %in% questionable_ids$workerId),]
+    traces_uasids <- data[which(data[[screen_id]] %in% questionable_ids$workerId),]
     
     return(traces_uasids)
   } else if (max_cutoff == FALSE && is.numeric(min_cutoff)){
     
-    event_counts <- by(data[[count_var]], data[[sess_id]], length)
+    event_counts <- by(data[[count_var]], data[[screen_id]], length)
     event_counts <- data.frame(workerId = names(event_counts), event_counts = as.numeric(event_counts))
     
     # check which ids are smaller than min_cutoff
     questionable_ids <- event_counts[which( event_counts$event_counts <= min_cutoff),]
     
     # filter these cases
-    traces_uasids <- data[which(data[[sess_id]] %in% questionable_ids$workerId),]
+    traces_uasids <- data[which(data[[screen_id]] %in% questionable_ids$workerId),]
     
     return(traces_uasids)
     

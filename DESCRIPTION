@@ -14,17 +14,20 @@ Authors@R:
            email = ""),
     person(given = "Aida",
           family = "Kreider",
-          role = c("aut",cre)
+          role = c("aut", "cre"),
           email = "aida.kreider99@gmail.com")
   )
 Description: This package facilitates the preprocessing process of mouse movement data, specifically the uas data. 
-License: ? 
+License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
 Imports:
-    haven
-    dplyr
-    tidyr
+    dplyr,
+    rlang,
+    stats,
+    tidyr,
+    utils
 RoxygenNote: 7.3.3
-
+Suggests: 
+    prabclus

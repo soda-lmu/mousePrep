@@ -20,7 +20,7 @@
 #' @param count_var A column in the dataset used to count the cases per screen_id.
 #' @param max_cutoff The cutoff value for mouse users. 
 #' @param min_cutoff the cutoff value for touch users, should not be the same as max_cutoff. 
-#' @return  
+#' @return An object of class `mouse_class`. 
 #' @examples
 #' df_mv <- sl_cases(df, column_sl = "type", factor_sl = "mousemove")
 #' df_mv <- mouse_class(df_mv, max_cutoff = 50, min_cutoff = 10)

@@ -4,6 +4,13 @@
 
 ...
 
+The preprocessingmouse package provides functions for common preprocessing tasks in mouse trajectory datasets.
+
+For consistent use of the functions, raw datasets should first be standardized using the standardize_col() function. 
+This step matches column names and formats, which reduces the need for additional parameter specifications in further preprocessing functions.
+
+This package can be used in conjunction with the mousetrap package. Together, the two packages support data cleaning and preparation for subsequent analyses, such as statistical modeling.
+
 
 ### Installing package from source (when the package is not available on CRAN or when the repository is not public)
 

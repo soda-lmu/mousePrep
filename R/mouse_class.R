@@ -1,13 +1,19 @@
-#' Classification of touch/mouse users.
+#' Filter mouse movement cases by number of recorded data points
 #'
-#' This function is to filter mouse movement cases based on the amount of recorded data points per screen
-#' per participant using the timestamp in the dataset. Default value is >50 for mouse users and <10 for touch devices. Cases between 
-#' 10 and 50 data points can be manually inspected, e.g. by checking the trajectory plots. This means we consider mouse users with 
-#' less than or equal to 50 data points and greater than or equal to 10 data points for touch device users.  
-#' 
-#' Define only max_cutoff, when the questionable devices need to be removed, returns filtered dataset. 
-#' When min_cutoff is also specified, the cases in the specified range will be returned for further inspection.
-#' When only min_cutoff is specified, the function returns the questionable devices only.  
+#' This function filters participant cases based on the number of recorded 
+#' mouse or touch movement data points per screen, using the timestamp variable. 
+#' By default, cases with more than 50 data points are classified as mouse users, 
+#' and cases with fewer than 10 data points are classified as touch device users. 
+#' Cases with 10–50 data points are considered ambiguous and can be manually 
+#' inspected (e.g., via trajectory plots).
+#'
+#' @details
+#' If only \code{max_cutoff} is specified, ambiguous devices are removed and the 
+#' filtered dataset is returned.  
+#' If both \code{min_cutoff} and \code{max_cutoff} are specified, cases within the 
+#' specified range are returned for further inspection.  
+#' If only \code{min_cutoff} is specified, only ambiguous device cases are returned.
+
 #'
 #' @param data A (sl_cases()) data frame with only mouse movement data. 
 #' @param screen_id The grouping variable, like a screen or worker ID.

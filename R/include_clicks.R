@@ -7,12 +7,13 @@
 #' @param data_complete A data frame with the screen ID, timestamps, and repeated initiation time
 #' @param data_clicks A data frame with the screen ID and timestamps of the clicks 
 #' @param screen_id The screen or worker ID, identifies the separated screens, one participant has multiple IDs. The screen ID should be identical for both data frames. 
-#' @param click_column The click column name. 
-#' @param timestamps The timestamp column name. 
+#' @param click_column The click column. 
+#' @param timestamps The timestamp column. 
 #' @param initiation_time  The initiation time column, with the initiation time repeated for each screen.
 #' 
-#' 
 #' @return The original data frame with an additional click column. 
+#' 
+#' 
 #' @examples
 #' click_data <- include_clicks(df_complete, df_click, click_column = "timestamps")
 #' @export
@@ -50,5 +51,8 @@ include_clicks  <- function(data_complete, data_clicks, screen_id = "mt_id", cli
   return(full_df)
   
 }
+
+
+
 
 

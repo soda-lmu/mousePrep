@@ -1,26 +1,35 @@
-#' Remove cases from dataset 
+#' Remove cases from a dataset
 #'
-#' This function takes the data and the specified participant ID, screen ID, the selected column,
-#' which entails the filter variable, the filter variable, the filter criteria and returns the filtered 
-#' data frame with the removed cases. 
-#' 
-#' Can be used to remove cases where e.g.:
-#'  - the window was resized
-#'  - touch devices were used
-#'  - the answer was not recorded in English
-#'  - ...
+#' This function removes cases from a dataset based on a specified filter variable
+#' and criterion. Filtering can be applied either at the screen (case) level or at
+#' the participant level.
 #'
-#' @param data A data frame with the mouse movement data. 
-#' @param part_id The participant ID.
-#' @param screen_id The screen or worker ID, identifies the separated screens, one participant has multiple IDs. 
-#' @param column_rm The column, which is used for the filter selection.
-#' @param factor_rm The factor / category which should be removed. 
-#' @param criteria For 1: Remove only the screen / worker Id, where the criteria are met.
-#'                 For 2: Remove all data from the participant, where the criteria are met. 
-#' @return A filtered data frame with removed cases. 
+#' The function can be used to exclude cases where, for example:
+#' \itemize{
+#'   \item the browser window was resized,
+#'   \item a touch device was used,
+#'   \item the response language was not English,
+#'   \item other exclusion criteria apply.
+#' }
+#'
+#' @param data A data frame containing mouse movement data.
+#' @param part_id Column name of the participant identifier.
+#' @param screen_id Column name of the screen or worker identifier. One participant
+#'   can have multiple screen IDs.
+#' @param column_rm Column name of the variable used for filtering.
+#' @param factor_rm The value or category that should be removed.
+#' @param criteria Integer indicating the removal level:
+#'   \describe{
+#'     \item{1}{Remove only the screen/worker ID where the criterion is met.}
+#'     \item{2}{Remove all data from the participant where the criterion is met.}
+#'   }
+#'
+#' @return A filtered data frame with the specified cases removed.
 #' @examples
 #' rm_cases(data, column_rm = "userAgent_is_touch_capable", factor_rm = TRUE, criteria = 1)
+#' 
 #' @export
+
 
 rm_cases <- function(data, part_id = "mouseid", screen_id = "workerId", column_rm, factor_rm, criteria) {
   

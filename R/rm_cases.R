@@ -31,7 +31,7 @@
 #' @export
 
 
-rm_cases <- function(data, part_id = "mouseid", screen_id = "workerId", column_rm, factor_rm, criteria) {
+rm_cases <- function(data, part_id = "mouseid", screen_id = "mt_id", column_rm, factor_rm, criteria) {
   
   if (criteria == "1"){
     # select the ids with where the condition applies 

@@ -11,7 +11,7 @@
 #' @details
 #' This function can be used to remove cases where the time spent on a question
 #' exceeds a predefined threshold (e.g., 7 minutes).
-
+#' 
 #' @param data A data frame with the mouse movement data. 
 #' @param part_id The participant ID.
 #' @param screen_id The screen ID. 
@@ -20,10 +20,10 @@
 #' 
 #' @return A filtered data frame with removed cases. 
 #' @examples
-#' rm_cases_time(df, part_id = "mouseid", screen_id = "workerId", time_col = "timeStamp", max_time = 7)
+#' rm_cases_time(df, part_id = "mouseid", screen_id = "mt_id", time_col = "timestamps", max_time = 7)
 #' @export
 
-rm_cases_time <- function(data, part_id = FALSE, screen_id = "workerId", time_col, max_time) {
+rm_cases_time <- function(data, part_id = FALSE, screen_id = "mt_id", time_col, max_time) {
   
   if (is.character(part_id)){
     

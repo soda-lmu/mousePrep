@@ -54,8 +54,8 @@ analysis workflows after preprocessing.
 
 ## Reference
 
-A list of all the package functions are available here -
-`docs/reference.html`
+A list of all package functions is available here:
+**[Reference](https://soda-lmu.github.io/mousePrep/reference.html)**.
 
 ## Installation guide
 

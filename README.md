@@ -1,47 +1,59 @@
-# preprocessingmouse package 
+README
+================
+Theerdha
+2026-02-23
 
-### When to use preprocessingmouse package? 
+<!-- README.md is generated from README.Rmd. Please edit README.Rmd -->
 
-...
+<img src="docs/assets/mouseprep-icon.png" align="right" width="120" />
 
-The preprocessingmouse package provides functions for common preprocessing tasks in mouse trajectory datasets.
+# mousePrep
 
-For consistent use of the functions, raw datasets should first be standardized using the standardize_col() function. 
-This step matches column names and formats, which reduces the need for additional parameter specifications in further preprocessing functions.
+`mousePrep` provides a lightweight set of preprocessing utilities for
+**mouse movement datasets**. It helps turn raw, mouse logs (often
+containing inconsistent column names, mixed event types and device,
+timing issues etc) into **clean, standardized, analysis-ready**
+trajectory tables.
 
-This package can be used in conjunction with the mousetrap package. Together, the two packages support data cleaning and preparation for subsequent analyses, such as statistical modeling.
+The package focuses on the practical steps that typically come *before*
+feature extraction and modeling: standardizing raw inputs, filtering and
+scoping to valid observations, handling device- and event-related
+observations (e.g., touch devices, resize events), calculating and
+aligning time variables, resolving repeated visits, and preparing
+outputs that can be exported in desired formats.
 
+## Workflow overview
 
-### Installing package from source (when the package is not available on CRAN or when the repository is not public)
+A typical workflow looks like:
 
-#### Required Packages 
+1.  **Standardize raw inputs** so downstream functions can be applied
+    consistently.
+2.  **Clean and scope** trajectories (remove invalid/empty cases,
+    non-mouse events, optional dataset-specific filters).
+3.  **Normalize geometry and time**, and derive key timing variables
+    (e.g., initiation time, RT, move time).
+4.  **Handle quality issues** such as resize-event artifacts, slow-move
+    outliers, and repeated visits per screen.
+5.  **Export a cleaned dataset** or pass the standardized output to
+    downstream tooling.
 
-```R
-library(haven)
-library(devtools)
-```
-#### Steps 
-Clone the repository into local system (possibly in documents folder). Open the .Rproj file as a project (on R studio)
-To build the package, do these steps
+## Standardization first
 
-```R
-devtools::document()
-devtools::install()
-```
-That will install the package into the R library. Now the package can be called via library() from any R session. 
-```R
-library(preprocessingmouse)
-```
+For consistent use of the functions, it is recommended that the raw
+datasets are standardized. This step maps column names and formats into
+a common schema, which will reduce the need to specify parameter names
+in later functions.
 
-### Example of preprocessing steps from the preprocessingmouse package
+## Precursor to `mousetrap`
 
-#### Remove touch devices
+`mousePrep` can be used in conjunction with the **`mousetrap`** package.
+Together, the two packages support data cleaning and preparation for
+subsequent analyses such as feature engineering and statistical
+modeling: `mousePrep` focuses broadly on standardizing and filtering raw
+logs, while `mousetrap` can be used for trajectory processing and
+analysis workflows after preprocessing.
 
-Remove all participants who used touch devices using the rm_cases() function, and furthermore use the 
-mouse_class() function to remove the cases with less than 50 data points per session. 
+## Reference
 
-```R
-rm_cases(data, column_rm = "userAgent_is_touch_capable", factor_rm = TRUE, criteria = 1)
-```
-
-
+A list of all the package functions are available here -
+`docs/reference.html`

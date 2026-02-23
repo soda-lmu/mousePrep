@@ -31,8 +31,8 @@ standardize_colnames <- function(data, verbose = FALSE) {
   
   old_names <- names(data)
   
-  # ---- Rules: add more later ----
-  # Each rule is a regex pattern (applied to the full column name) and a target name.
+  # Rules
+  
   rules <- list(
     list(pattern = "(?i).*worker.*id.*",      to = "mt_id"),
     list(pattern = "(?i).*time.*stamp.*",    to = "timestamps"),
@@ -61,8 +61,7 @@ standardize_colnames <- function(data, verbose = FALSE) {
   
   # If nothing changes, return early
   if (identical(old_names, new_names)) return(data)
-  
-  # ---- Collision guard ----
+
   # If multiple columns map to the same standardized name, renaming would create duplicates.
   dups <- unique(new_names[duplicated(new_names)])
   if (length(dups) > 0) {
@@ -86,7 +85,7 @@ standardize_colnames <- function(data, verbose = FALSE) {
     rlang::abort(msg)
   }
   
-  # ---- Rename by setting names (fast, preserves tibble/data.frame) ----
+  # Rename by setting names (fast, preserves tibble/data.frame)
   names(data) <- new_names
   
   if (isTRUE(verbose)) {

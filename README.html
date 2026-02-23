@@ -620,18 +620,18 @@ and event-related observations (e.g., touch devices, resize events),
 calculating and aligning time variables, resolving repeated visits, and
 preparing outputs that can be exported in desired formats.</p>
 <h2 id="workflow-overview">Workflow overview</h2>
-<p>A typical workflow looks like:</p>
+<p>A typical workflow is:</p>
 <ol style="list-style-type: decimal">
-<li><strong>Standardize raw inputs</strong> so downstream functions can
-be applied consistently.</li>
-<li><strong>Clean and scope</strong> trajectories (remove invalid/empty
-cases, non-mouse events, optional dataset-specific filters).</li>
-<li><strong>Normalize geometry and time</strong>, and derive key timing
-variables (e.g., initiation time, RT, move time).</li>
-<li><strong>Handle quality issues</strong> such as resize-event
-artifacts, slow-move outliers, and repeated visits per screen.</li>
-<li><strong>Export a cleaned dataset</strong> or pass the standardized
-output to downstream tooling.</li>
+<li><strong>Standardize raw inputs</strong> so the upcoming functions
+can be applied consistently.</li>
+<li><strong>Clean and scope</strong> remove invalid trajectories.</li>
+<li><strong>Feature engineering</strong>, and derive screen geometry and
+key time variables (e.g., initiation time, response time, move
+time).</li>
+<li><strong>Handle outliers</strong> such as slow-move outliers, and
+repeated visits per screen.</li>
+<li><strong>Export a cleaned dataset</strong> export the standardized
+output for further processing.</li>
 </ol>
 <h2 id="standardization-first">Standardization first</h2>
 <p>For consistent use of the functions, it is recommended that the raw

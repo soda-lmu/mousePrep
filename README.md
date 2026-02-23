@@ -24,18 +24,17 @@ outputs that can be exported in desired formats.
 
 ## Workflow overview
 
-A typical workflow looks like:
+A typical workflow is:
 
-1.  **Standardize raw inputs** so downstream functions can be applied
+1.  **Standardize raw inputs** so the upcoming functions can be applied
     consistently.
-2.  **Clean and scope** trajectories (remove invalid/empty cases,
-    non-mouse events, optional dataset-specific filters).
-3.  **Normalize geometry and time**, and derive key timing variables
-    (e.g., initiation time, RT, move time).
-4.  **Handle quality issues** such as resize-event artifacts, slow-move
-    outliers, and repeated visits per screen.
-5.  **Export a cleaned dataset** or pass the standardized output to
-    downstream tooling.
+2.  **Clean and scope** remove invalid trajectories.
+3.  **Feature engineering**, and derive screen geometry and key time
+    variables (e.g., initiation time, response time, move time).
+4.  **Handle outliers** such as slow-move outliers, and repeated visits
+    per screen.
+5.  **Export a cleaned dataset** export the standardized output for
+    further processing.
 
 ## Standardization first
 

@@ -1,12 +1,17 @@
-#' Remove participants or cases from data set based on maximum time spent on a question
+#' Remove participants or cases based on maximum time spent on a question
 #'
-#' This function returns a filtered dataset based on the maximum time spend on a question on 
-#' either participant or screen level. If the function should only consider the cases, leave 
-#' the participant ID empty and only fill screen ID. If the function should consider the time on 
-#' participant level, fill in both participant and screen ID.
-#' 
-#' Can be used to remove cases where time exceeded a certain threshold per question, e.g. 7 minutes. 
+#' This function filters a dataset based on the maximum time spent on a question,
+#' either at the participant level or at the screen (case) level.  
+#' If only a screen ID is provided, filtering is applied at the case level.  
+#' If both participant ID and screen ID are provided, time is aggregated at the
+#' participant level before filtering.
 #'
+#' The UAS dataset records time in milliseconds.
+#'
+#' @details
+#' This function can be used to remove cases where the time spent on a question
+#' exceeds a predefined threshold (e.g., 7 minutes).
+
 #' @param data A data frame with the mouse movement data. 
 #' @param part_id The participant ID.
 #' @param screen_id The screen ID. 

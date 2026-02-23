@@ -26,7 +26,7 @@
 #' df_mv <- mouse_class(df_mv, max_cutoff = 50, min_cutoff = 10)
 #' @export
 
-mouse_class <- function(data, screen_id = "workerId", count_var = "timeStamp", max_cutoff = 50, min_cutoff = 10) {
+mouse_class <- function(data, screen_id = "mt_id", count_var = "timestamps", max_cutoff = 50, min_cutoff = 10) {
   
   # return a dataset with more than the number of specified cases in max_cutoff
   if (is.numeric(max_cutoff) && min_cutoff == FALSE) {
@@ -56,6 +56,8 @@ mouse_class <- function(data, screen_id = "workerId", count_var = "timeStamp", m
     traces_uasids <- data[which(data[[screen_id]] %in% questionable_ids$workerId),]
     
     return(traces_uasids)
+    
+    # return a dataset with less than the number of specified cases in min_cutoff
   } else if (max_cutoff == FALSE && is.numeric(min_cutoff)){
     
     event_counts <- by(data[[count_var]], data[[screen_id]], length)

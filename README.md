@@ -5,7 +5,7 @@ Theerdha
 
 <!-- README.md is generated from README.Rmd. Please edit README.Rmd -->
 
-<img src="docs/assets/mouseprep-icon.png" align="right" width="120" />
+<img src="docs/assets/mousePrep_icon.png" align="right" width="120" />
 
 # mousePrep
 

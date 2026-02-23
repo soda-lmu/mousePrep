@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>mousePrep Reference</title>
+  <style>
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; margin: 2rem auto; max-width: 900px; line-height: 1.5; padding: 0 1rem; }
+    header { margin-bottom: 2rem; }
+    h1 { margin: 0 0 .25rem 0; }
+    .muted { color: #666; }
+    .grid { display: grid; grid-template-columns: 1fr; gap: 1.25rem; }
+    .grid { margin-bottom: 3rem; }
+    .examples { border: none; padding: 0; }
+    section { border: 1px solid #eee; border-radius: 12px; padding: 1rem; }
+    section h2 { margin-top: 0; font-size: 1.1rem; }
+    ul { margin: .5rem 0 0 1.1rem; }
+    code { background: #f6f8fa; padding: .1rem .3rem; border-radius: 6px; }
+    a { color: inherit; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>mousePrep Reference</h1>
+    <div class="muted"></div>
+  </header>
+
+  <div class="grid">
+    These are the main functions in the mousePrep package for processing mouse-tracking data including data standardization, analysis, outlier detection and aggregation.
+    The functions are organized into categories based on their purpose, but they can be used in any order except when specified otherwise. 
+    Each function includes parameters for customization and returns a modified dataset along with an audit log of changes made.
+
+    
+    <p>Depending on the file format, one of the standard R functions for reading files into R can be used such as read.table or read.csv
+    After the data is loaded, these functions can be used to clean, preprocess, and engineer features from the raw mouse-tracking data. 
+    </p>    
+    
+    <section>
+      <h2>Data Standardization </h2>
+
+      <h4>Column Name Standardization </h4>
+      <ul>
+        <li><code>standardize_cols()</code> — Standardize names/types/units</li>
+      </ul>
+      <h4>Case filtering </h4>
+      <ul>    
+        <li><code>rm_cases()</code> — Drop invalid participants/screens/empty trajectories</li>
+        <li><code>rm_non_mouse_events()</code> — Remove non-mouse movement events</li>
+        <li><code>rm_spanish()</code> — Remove language-specific responses such as Spanish responses</li>
+        <li><code>rm_resize_events()</code> — Detect and remove resize events. Option to remove trajectory or participant</li>
+      </ul>
+      <h4>Device handling</h4>
+      <ul>
+        <li><code>mp_assign_device_flag()</code> — Mouse vs touch classification</li>
+        <li><code>mp_remove_touch_devices()</code> — Remove touch devices by rule</li>
+      </ul>
+    </section>
+
+
+    
+
+    <section>
+      <h2>Feature Engineering</h2>
+      <h4>Screen Geometry </h4>
+      <ul>
+        <li><code>screen_dimension_calculator()</code> — Compute screen width/height from inner+scroll for non empty screen widths</li>
+        Wrapper screen dimension calculator for uas datasets
+      </ul>
+      <h4>Timing & alignment </h4>
+      <ul>
+        <li><code>initiation_time()</code> — Compute Initiation time from timestamps of trajectories</li>
+        <li><code>response_time()</code> — Compute Response Time</li>
+        <li><code>move_time()</code> — Move time (= RT − initiation)</li>
+      </ul>
+      
+    </section>
+
+ 
+
+    <section>
+      <h2>Outlier detection based on timing features</h2>
+      After timing features are computed, outliers can be detected and handled using the following functions.
+      <ul>
+        <li><code>flag_move_time_outliers()</code> — Flag outliers. Option to flag based on data-driven or fixed thresholds</li>
+        <li><code>rm_outliers()</code> — Remove outliers </li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Repeated visits for trajectories and questions</h2>
+      <ul>
+        <li><code>rm_multiple_trajectories()</code> — Option to keep first, last or longest trajectory when there are multiple trajectories per screen</li>
+        <li><code>flag_multiple_visits()</code> - Flag questions with multiple visits. Option to flag for cognitive and/or follow-up questions</li>
+        Option to remove participants or screens with multiple visits based on flag. 
+        
+      </ul>
+    </section>
+
+    <section>
+      <h2>Merging Other Functional Data</h2>
+      <ul>
+        <li><code>extract_clicks()</code> — Extract click time/location</li>
+        <li><code>merge_clicks()</code> — Merge clicks data into trajectories data</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Processing via mousetrap</h2>
+      <ul>
+        <li><code>mp_processing_mt()</code> — Use analysis functions in mousetrap package to get to the final dataset</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Export & reporting</h2>
+      <ul>
+        <li><code>mp_export_dataset()</code> — Export cleaned dataset</li>
+      </ul>
+    </section>
+  </div>
+
+
+  <section class="examples">
+    <h2>Examples</h2>
+    <li><code>data <- standardize_colnames(dat_full)</code></li>
+    <li><code>screen_dims <- screen_dimension_calculator(data, uas = TRUE)</code> </li>
+    
+
+  </section>
+</body>
+</html>

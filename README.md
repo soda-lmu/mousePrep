@@ -57,3 +57,9 @@ analysis workflows after preprocessing.
 
 A list of all the package functions are available here -
 `docs/reference.html`
+
+## Installation guide
+
+To install the package from Github, you need the devtools package . The
+development version can be installed via
+`devtools::install_github("soda-lmu\mousePrep")`.

@@ -5,7 +5,7 @@ README
 
 <img src="docs/assets/mousePrep_icon.png" align="right" width="120" />
 
-# mousePrep
+# mousePrep Package
 
 `mousePrep` provides a lightweight set of preprocessing utilities for
 **mouse movement datasets**. It helps turn raw, mouse logs (often
@@ -33,6 +33,8 @@ A typical workflow is:
     and repeated visits per screen.
 5.  **Export a cleaned dataset** export the clean and standardized
     output for further processing.
+
+<img src="man/figures/mousePrep_white.png" width="8166" />
 
 ## Standardization first
 

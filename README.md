@@ -34,7 +34,12 @@ A typical workflow is:
 5.  **Export a cleaned dataset** export the clean and standardized
     output for further processing.
 
-<img src="man/figures/mousePrep_white.png" width="8166" />
+<figure>
+<img src="man/figures/mousePrep_white.png"
+alt="mousePrep preprocessing workflow" />
+<figcaption aria-hidden="true">mousePrep preprocessing
+workflow</figcaption>
+</figure>
 
 ## Standardization first
 

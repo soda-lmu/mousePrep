@@ -8,6 +8,9 @@
 <meta name="generator" content="pandoc" />
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
+
+
+
 <title>README</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
@@ -347,7 +350,6 @@ display: none;
 
 <h1 class="title toc-ignore">README</h1>
 
-
 </div>
 
 
@@ -360,34 +362,34 @@ utilities for <strong>mouse movement datasets</strong>. It helps turn
 raw, mouse logs (often containing inconsistent column names, mixed event
 types and device, timing issues etc) into <strong>clean, standardized,
 analysis-ready</strong> trajectory tables.</p>
-<p>The package focuses on the practical steps that typically come
-<em>before</em> feature extraction and modeling: standardizing raw
-inputs, filtering and scoping to valid observations, handling device-
-and event-related observations (e.g., touch devices, resize events),
-calculating and aligning time variables, resolving repeated visits, and
-preparing outputs that can be exported in desired formats.</p>
+<p>The package focuses on the practical steps that typically come before
+modelingmachine learning: standardizing raw inputs, filtering and
+scoping to valid observations, handling device and event-related
+observations (e.g., touch devices, resize events), calculating and
+aligning time variables, resolving repeated visits, and preparing
+outputs that can be exported in desired formats.</p>
 <div id="workflow-overview" class="section level2">
 <h2>Workflow overview</h2>
 <p>A typical workflow is:</p>
 <ol style="list-style-type: decimal">
 <li><strong>Standardize raw inputs</strong> so the upcoming functions
 can be applied consistently.</li>
-<li><strong>Clean and scope</strong> remove invalid trajectories.</li>
-<li><strong>Feature engineering</strong>, and derive screen geometry and
+<li><strong>Clean</strong> remove invalid trajectories.</li>
+<li><strong>Feature transformations</strong> derive screen geometry and
 key time variables (e.g., initiation time, response time, move
 time).</li>
-<li><strong>Handle outliers</strong> such as slow-move outliers, and
-repeated visits per screen.</li>
-<li><strong>Export a cleaned dataset</strong> export the standardized
-output for further processing.</li>
+<li><strong>Handle outliers</strong> such as flagging and
+removingslow-move outliers, and repeated visits per screen.</li>
+<li><strong>Export a cleaned dataset</strong> export the clean and
+standardized output for further processing.</li>
 </ol>
 </div>
 <div id="standardization-first" class="section level2">
 <h2>Standardization first</h2>
 <p>For consistent use of the functions, it is recommended that the raw
-datasets are standardized. This step maps column names and formats into
-a common schema, which will reduce the need to specify parameter names
-in later functions.</p>
+datasets are standardized using <code>standardize_cols()</code>. This
+step maps column names and formats into a common schema, which will
+reduce the need to specify parameter names in later functions.</p>
 </div>
 <div id="precursor-to-mousetrap" class="section level2">
 <h2>Precursor to <code>mousetrap</code></h2>
@@ -401,7 +403,7 @@ processing and analysis workflows after preprocessing.</p>
 </div>
 <div id="reference" class="section level2">
 <h2>Reference</h2>
-<p>A list of all package functions is available here: <strong><a href="https://soda-lmu.github.io/mousePrep/reference.html">Reference</a></strong>.</p>
+<p>A list of all package functions is available <strong><a href="https://soda-lmu.github.io/mousePrep/reference.html">here</a></strong>.</p>
 </div>
 <div id="installation-guide" class="section level2">
 <h2>Installation guide</h2>

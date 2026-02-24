@@ -13,9 +13,9 @@ containing inconsistent column names, mixed event types and device,
 timing issues etc) into **clean, standardized, analysis-ready**
 trajectory tables.
 
-The package focuses on the practical steps that typically come *before*
-feature extraction and modeling: standardizing raw inputs, filtering and
-scoping to valid observations, handling device- and event-related
+The package focuses on the practical steps that typically come before
+modelingmachine learning: standardizing raw inputs, filtering and
+scoping to valid observations, handling device and event-related
 observations (e.g., touch devices, resize events), calculating and
 aligning time variables, resolving repeated visits, and preparing
 outputs that can be exported in desired formats.
@@ -26,20 +26,20 @@ A typical workflow is:
 
 1.  **Standardize raw inputs** so the upcoming functions can be applied
     consistently.
-2.  **Clean and scope** remove invalid trajectories.
-3.  **Feature engineering**, and derive screen geometry and key time
+2.  **Clean** remove invalid trajectories.
+3.  **Feature transformations** derive screen geometry and key time
     variables (e.g., initiation time, response time, move time).
-4.  **Handle outliers** such as slow-move outliers, and repeated visits
-    per screen.
-5.  **Export a cleaned dataset** export the standardized output for
-    further processing.
+4.  **Handle outliers** such as flagging and removingslow-move outliers,
+    and repeated visits per screen.
+5.  **Export a cleaned dataset** export the clean and standardized
+    output for further processing.
 
 ## Standardization first
 
 For consistent use of the functions, it is recommended that the raw
-datasets are standardized. This step maps column names and formats into
-a common schema, which will reduce the need to specify parameter names
-in later functions.
+datasets are standardized using `standardize_cols()`. This step maps
+column names and formats into a common schema, which will reduce the
+need to specify parameter names in later functions.
 
 ## Precursor to `mousetrap`
 
@@ -52,8 +52,8 @@ analysis workflows after preprocessing.
 
 ## Reference
 
-A list of all package functions is available here:
-**[Reference](https://soda-lmu.github.io/mousePrep/reference.html)**.
+A list of all package functions is available
+**[here](https://soda-lmu.github.io/mousePrep/reference.html)**.
 
 ## Installation guide
 

@@ -27,8 +27,8 @@ screen_dimension_calculator <- function(
     scroll_height = NULL,
     filter_nonblank_col = NULL,
     keep_cols = NULL,
-    out_width = "screenWidth",
-    out_height = "screenHeight"
+    out_width = "screen_width",
+    out_height = "screen_height"
 ) {
   if (!is.data.frame(data)) {
     rlang::abort("`data` must be a data.frame or tibble.")
@@ -36,20 +36,20 @@ screen_dimension_calculator <- function(
   
   #Apply UAS defaults if requested
   if (isTRUE(uas)) {
-    if (is.null(inner_width))  inner_width  <- "innerWidth"
-    if (is.null(inner_height)) inner_height <- "innerHeight"
-    if (is.null(scroll_width)) scroll_width <- "scrollWidth"
-    if (is.null(scroll_height)) scroll_height <- "scrollHeight"
-    if (is.null(filter_nonblank_col)) filter_nonblank_col <- "screenWidth"
+    if (is.null(inner_width))  inner_width  <- "inner_width"
+    if (is.null(inner_height)) inner_height <- "inner_height"
+    if (is.null(scroll_width)) scroll_width <- "scroll_width"
+    if (is.null(scroll_height)) scroll_height <- "scroll_height"
+    if (is.null(filter_nonblank_col)) filter_nonblank_col <- "screen_width"
     if (is.null(keep_cols)) {
       keep_cols <- c(
-        "workerId", "screenWidth", "screenHeight",
-        "innerWidth", "innerHeight", "scrollWidth", "scrollHeight"
+        "mt_id", "screen_width", "screen_height",
+        "inner_width", "inner_height", "scroll_width", "scroll_height"
       )
     }
   }
   
-  # Require the 4 core columns ----
+  # Require the 4 core columns
   if (is.null(inner_width) || is.null(inner_height) ||
       is.null(scroll_width) || is.null(scroll_height)) {
     rlang::abort(

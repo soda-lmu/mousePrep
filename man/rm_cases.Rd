@@ -2,48 +2,53 @@
 % Please edit documentation in R/rm_cases.R
 \name{rm_cases}
 \alias{rm_cases}
-\title{Remove cases from dataset}
+\title{Remove cases from a dataset}
 \usage{
 rm_cases(
   data,
   part_id = "mouseid",
-  sess_id = "workerId",
+  screen_id = "mt_id",
   column_rm,
   factor_rm,
   criteria
 )
 }
 \arguments{
-\item{data}{A data frame with the mouse movement data.}
+\item{data}{A data frame containing mouse movement data.}
 
-\item{part_id}{The participant ID.}
+\item{part_id}{Column name of the participant identifier.}
 
-\item{sess_id}{The session or worker ID, identifies the separated session, one participant has multiple IDs.}
+\item{screen_id}{Column name of the screen or worker identifier. One participant
+can have multiple screen IDs.}
 
-\item{column_rm}{The column, which is used for the filter selection.}
+\item{column_rm}{Column name of the variable used for filtering.}
 
-\item{factor_rm}{The factor / category which should be removed.}
+\item{factor_rm}{The value or category that should be removed.}
 
-\item{criteria}{For 1: Remove only the session / worker Id, where the criteria are met.
-For 2: Remove all data from the participant, where the criteria are met.}
+\item{criteria}{Integer indicating the removal level:
+\describe{
+\item{1}{Remove only the screen/worker ID where the criterion is met.}
+\item{2}{Remove all data from the participant where the criterion is met.}
+}}
 }
 \value{
-A filtered data frame with removed cases.
+A filtered data frame with the specified cases removed.
 }
 \description{
-This function takes the data and the specified participant ID, session ID, the selected column,
-which entails the filter variable, the filter variable, the filter criteria and returns the filtered
-data frame with the removed cases.
+This function removes cases from a dataset based on a specified filter variable
+and criterion. Filtering can be applied either at the screen (case) level or at
+the participant level.
 }
 \details{
-Can be used to remove cases where e.g.:
+The function can be used to exclude cases where, for example:
 \itemize{
-\item the window was resized
-\item touch devices were used
-\item the answer was not recorded in English
-\item ...
+\item the browser window was resized,
+\item a touch device was used,
+\item the response language was not English,
+\item other exclusion criteria apply.
 }
 }
 \examples{
 rm_cases(data, column_rm = "userAgent_is_touch_capable", factor_rm = TRUE, criteria = 1)
+
 }

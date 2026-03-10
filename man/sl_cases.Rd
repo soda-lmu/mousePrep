@@ -2,30 +2,30 @@
 % Please edit documentation in R/sl_cases.R
 \name{sl_cases}
 \alias{sl_cases}
-\title{Selects cases from dataset}
+\title{Select cases from a dataset}
 \usage{
 sl_cases(data, column_sl, factor_sl)
 }
 \arguments{
-\item{data}{A data frame with the mouse movement data.}
+\item{data}{A data frame containing mouse movement data.}
 
-\item{column_sl}{The column, which is used for the filter selection.}
+\item{column_sl}{Column name of the variable used for selection.}
 
-\item{factor_sl}{The factor / category which is selected.}
+\item{factor_sl}{The value or category to be selected.}
 }
 \value{
-A filtered data frame with removed cases.
+A filtered data frame containing only the selected cases.
 }
 \description{
-This function selects the specified cases based on the column and the level, return the
-new data frame.
+This function selects cases from a dataset based on a specified variable and
+value and returns a filtered data frame.
 }
 \details{
-Can be used to select cases with e.g.:
+The function can be used to select cases such as:
 \itemize{
-\item no touch device
-\item mouse movement data
-\item ...
+\item non-touch device users,
+\item observations containing mouse movement data,
+\item other user-defined selection criteria.
 }
 }
 \examples{

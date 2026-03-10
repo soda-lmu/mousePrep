@@ -2,22 +2,22 @@
 % Please edit documentation in R/mouse_class.R
 \name{mouse_class}
 \alias{mouse_class}
-\title{Classification of touch/mouse users.}
+\title{Filter mouse movement cases by number of recorded data points}
 \usage{
 mouse_class(
   data,
-  sess_id = "workerId",
-  count_var = "timeStamp",
-  max_cutoff = FALSE,
-  min_cutoff = FALSE
+  screen_id = "mt_id",
+  count_var = "timestamps",
+  max_cutoff = 50,
+  min_cutoff = 10
 )
 }
 \arguments{
 \item{data}{A (sl_cases()) data frame with only mouse movement data.}
 
-\item{sess_id}{The grouping variable, like a session or worker ID.}
+\item{screen_id}{The grouping variable, like a screen or worker ID.}
 
-\item{count_var}{A column in the dataset used to count the cases per sess_id.}
+\item{count_var}{A column in the dataset used to count the cases per screen_id.}
 
 \item{max_cutoff}{The cutoff value for mouse users.}
 
@@ -27,14 +27,19 @@ mouse_class(
 An object of class \code{mouse_class}.
 }
 \description{
-This function selects cases based on the amount of recorded data points per session
-per participant. Default value is >50 for mouse users and <10 for touch devices. Cases between
-10 and 50 data points can be manually inspected, e.g. by checking the trajectory plots.
+This function filters participant cases based on the number of recorded
+mouse or touch movement data points per screen, using the timestamp variable.
+By default, cases with more than 50 data points are classified as mouse users,
+and cases with fewer than 10 data points are classified as touch device users.
+Cases with 10–50 data points are considered ambiguous and can be manually
+inspected (e.g., via trajectory plots).
 }
 \details{
-Define only max_cutoff, when the questionable devices need to be removed, returns filtered dataset.
-When min_cutoff is also specified, the cases in the specified range will be returned for further inspection.
-When only min_cutoff is specified, the function returns the questionable devices only.
+If only \code{max_cutoff} is specified, ambiguous devices are removed and the
+filtered dataset is returned.
+If both \code{min_cutoff} and \code{max_cutoff} are specified, cases within the
+specified range are returned for further inspection.
+If only \code{min_cutoff} is specified, only ambiguous device cases are returned.
 }
 \examples{
 df_mv <- sl_cases(df, column_sl = "type", factor_sl = "mousemove")

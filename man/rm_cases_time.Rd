@@ -2,15 +2,9 @@
 % Please edit documentation in R/rm_cases_time.R
 \name{rm_cases_time}
 \alias{rm_cases_time}
-\title{Remove participants or cases from data set based on maximum time spent on a question}
+\title{Remove participants or cases based on maximum time spent on a question}
 \usage{
-rm_cases_time(
-  data,
-  part_id = FALSE,
-  screen_id = "workerId",
-  time_col,
-  max_time
-)
+rm_cases_time(data, part_id = FALSE, screen_id = "mt_id", time_col, max_time)
 }
 \arguments{
 \item{data}{A data frame with the mouse movement data.}
@@ -27,14 +21,18 @@ rm_cases_time(
 A filtered data frame with removed cases.
 }
 \description{
-This function returns a filtered dataset based on the maximum time spend on a question on
-either participant or screen level. If the function should only consider the cases, leave
-the participant ID empty and only fill screen ID. If the function should consider the time on
-participant level, fill in both participant and screen ID.
+This function filters a dataset based on the maximum time spent on a question,
+either at the participant level or at the screen (case) level.
+If only a screen ID is provided, filtering is applied at the case level.
+If both participant ID and screen ID are provided, time is aggregated at the
+participant level before filtering.
 }
 \details{
-Can be used to remove cases where time exceeded a certain threshold per question, e.g. 7 minutes.
+The UAS dataset records time in milliseconds.
+
+This function can be used to remove cases where the time spent on a question
+exceeds a predefined threshold (e.g., 7 minutes).
 }
 \examples{
-rm_cases_time(df, part_id = "mouseid", screen_id = "workerId", time_col = "timeStamp", max_time = 7)
+rm_cases_time(df, part_id = "mouseid", screen_id = "mt_id", time_col = "timestamps", max_time = 7)
 }

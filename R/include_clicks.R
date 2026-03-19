@@ -28,7 +28,7 @@ include_clicks  <- function(data_complete, data_clicks, screen_id = "mt_id", cli
   clicks_char <- data.frame(names = names(clicks_char), clicks_char)
   names(clicks_char)[1] <- screen_id
   
-  # perform an left join
+  # perform a left join
   clicks_char <- clicks_char[clicks_char[[screen_id]] %in% data_complete[[screen_id]], ]
   full_df <- merge(data_complete, clicks_char, by = screen_id, all.x = TRUE)
   

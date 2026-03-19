@@ -38,21 +38,22 @@
     <section>
       <h2>Data Standardization </h2>
 
-      <h4>Column Name Standardization </h4>
+      <h4>Column Standardization </h4>
       <ul>
         <li><code>standardize_cols()</code> — Standardize names/types/units</li>
+        <li><code>convert_numeric()</code> — Convert quantitative columns to numeric type</li>
       </ul>
+      
       <h4>Case filtering </h4>
       <ul>    
         <li><code>rm_cases()</code> — Drop invalid participants/screens/empty trajectories</li>
+        <li><code>rm_cases_time()</code> — Drop cases or participants based on time spent on a question</li>
+        <li><code>rm_touch_devices()</code> — Remove touch devices by rule</li>
+        <li><code>mouse_class()</code> — Drop participant cases based on the number of recorded mouse or touch movement data points per screen</li>
         <li><code>rm_non_mouse_events()</code> — Remove non-mouse movement events</li>
         <li><code>rm_spanish()</code> — Remove language-specific responses such as Spanish responses</li>
         <li><code>rm_resize_events()</code> — Detect and remove resize events. Option to remove trajectory or participant</li>
-      </ul>
-      <h4>Device handling</h4>
-      <ul>
-        <li><code>mp_assign_device_flag()</code> — Mouse vs touch classification</li>
-        <li><code>mp_remove_touch_devices()</code> — Remove touch devices by rule</li>
+        
       </ul>
     </section>
 
@@ -63,14 +64,13 @@
       <h2>Feature Engineering</h2>
       <h4>Screen Geometry </h4>
       <ul>
-        <li><code>screen_dimension_calculator()</code> — Compute screen width/height from inner+scroll for non empty screen widths</li>
+        <li><code>screen_dims_data_prepare()</code> — Prepare data for screen dimension calculations with non-empty screen widths</li>
+        <li><code>screen_dims_calculate()</code> — Compute screen width/height from inner+scroll</li>
         Wrapper screen dimension calculator for uas datasets
       </ul>
       <h4>Timing & alignment </h4>
       <ul>
-        <li><code>initiation_time()</code> — Compute Initiation time from timestamps of trajectories</li>
-        <li><code>response_time()</code> — Compute Response Time</li>
-        <li><code>move_time()</code> — Move time (= RT − initiation)</li>
+        <li><code>time_vars_calculate()</code> — Compute Initiation time, response time and move time from timestamps of trajectories</li>
       </ul>
       
     </section>
@@ -81,15 +81,15 @@
       <h2>Outlier detection based on timing features</h2>
       After timing features are computed, outliers can be detected and handled using the following functions.
       <ul>
-        <li><code>flag_move_time_outliers()</code> — Flag outliers. Option to flag based on data-driven or fixed thresholds</li>
-        <li><code>rm_outliers()</code> — Remove outliers </li>
+        <li><code>flag_outliers()</code> — Flag outliers. Option to flag based on data-driven or fixed thresholds</li>
+        <li><code>rm_outliers()</code> — Remove outliers based on the flagged observations </li>
       </ul>
     </section>
 
     <section>
       <h2>Repeated visits for trajectories and questions</h2>
       <ul>
-        <li><code>rm_multiple_trajectories()</code> — Option to keep first, last or longest trajectory when there are multiple trajectories per screen</li>
+        <li><code>multiple_traj()</code> — Option to keep first, last or longest trajectory when there are multiple trajectories per screen</li>
         <li><code>flag_multiple_visits()</code> - Flag questions with multiple visits. Option to flag for cognitive and/or follow-up questions</li>
         Option to remove participants or screens with multiple visits based on flag. 
         
@@ -99,8 +99,7 @@
     <section>
       <h2>Merging Other Functional Data</h2>
       <ul>
-        <li><code>extract_clicks()</code> — Extract click time/location</li>
-        <li><code>merge_clicks()</code> — Merge clicks data into trajectories data</li>
+        <li><code>include_clicks()</code> — Extract click time/location and merge with trajectories</li>
       </ul>
     </section>
 
@@ -114,7 +113,7 @@
     <section>
       <h2>Export & reporting</h2>
       <ul>
-        <li><code>mp_export_dataset()</code> — Export cleaned dataset</li>
+        <li><code>mp_export_dataset()</code> — Export cleaned dataset in long or wide formats</li>
       </ul>
     </section>
   </div>

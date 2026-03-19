@@ -2,10 +2,6 @@
 #'
 #' This function filters participant cases based on the number of recorded 
 #' mouse or touch movement data points per screen, using the timestamp variable. 
-#' By default, cases with more than 50 data points are classified as mouse users, 
-#' and cases with fewer than 10 data points are classified as touch device users. 
-#' Cases with 10–50 data points are considered ambiguous and can be manually 
-#' inspected (e.g., via trajectory plots).
 #'
 #' @details
 #' If only \code{max_cutoff} is specified, ambiguous devices are removed and the 
@@ -13,8 +9,7 @@
 #' If both \code{min_cutoff} and \code{max_cutoff} are specified, cases within the 
 #' specified range are returned for further inspection.  
 #' If only \code{min_cutoff} is specified, only ambiguous device cases are returned.
-
-#'
+#' 
 #' @param data A (sl_cases()) data frame with only mouse movement data. 
 #' @param screen_id The grouping variable, like a screen or worker ID.
 #' @param count_var A column in the dataset used to count the cases per screen_id.
@@ -26,7 +21,7 @@
 #' df_mv <- mouse_class(df_mv, max_cutoff = 50, min_cutoff = 10)
 #' @export
 
-mouse_class <- function(data, screen_id = "mt_id", count_var = "timestamps", max_cutoff = 50, min_cutoff = 10) {
+mouse_class <- function(data, screen_id = "mt_id", count_var = "timestamps", max_cutoff = FALSE, min_cutoff = FALSE) {
   
   # return a dataset with more than the number of specified cases in max_cutoff
   if (is.numeric(max_cutoff) && min_cutoff == FALSE) {

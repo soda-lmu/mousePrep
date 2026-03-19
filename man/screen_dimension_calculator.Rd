@@ -13,8 +13,8 @@ screen_dimension_calculator(
   scroll_height = NULL,
   filter_nonblank_col = NULL,
   keep_cols = NULL,
-  out_width = "screenWidth",
-  out_height = "screenHeight"
+  out_width = "screen_width",
+  out_height = "screen_height"
 )
 }
 \arguments{

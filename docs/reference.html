@@ -51,7 +51,6 @@
         <li><code>rm_touch_devices()</code> — Remove touch devices by rule</li>
         <li><code>mouse_class()</code> — Drop participant cases based on the number of recorded mouse or touch movement data points per screen</li>
         <li><code>rm_non_mouse_events()</code> — Remove non-mouse movement events</li>
-        <li><code>rm_spanish()</code> — Remove language-specific responses such as Spanish responses</li>
         <li><code>rm_resize_events()</code> — Detect and remove resize events. Option to remove trajectory or participant</li>
         
       </ul>
@@ -64,7 +63,6 @@
       <h2>Feature Engineering</h2>
       <h4>Screen Geometry </h4>
       <ul>
-        <li><code>screen_dims_data_prepare()</code> — Prepare data for screen dimension calculations with non-empty screen widths</li>
         <li><code>screen_dims_calculate()</code> — Compute screen width/height from inner+scroll</li>
         Wrapper screen dimension calculator for uas datasets
       </ul>
@@ -89,9 +87,8 @@
     <section>
       <h2>Repeated visits for trajectories and questions</h2>
       <ul>
-        <li><code>multiple_traj()</code> — Option to keep first, last or longest trajectory when there are multiple trajectories per screen</li>
-        <li><code>flag_multiple_visits()</code> - Flag questions with multiple visits. Option to flag for cognitive and/or follow-up questions</li>
-        Option to remove participants or screens with multiple visits based on flag. 
+        <li><code>multiple_traj()</code> — Flag first, last or longest trajectory when there are multiple trajectories per screen</li>
+         #keep/remove flagged values
         
       </ul>
     </section>

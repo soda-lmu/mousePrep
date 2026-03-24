@@ -4,7 +4,14 @@
 \alias{multiple_traj}
 \title{Detect screen with multiple visits}
 \usage{
-multiple_traj(data, part_id, quest_id, screen_id = "mt_id", criteria)
+multiple_traj(
+  data,
+  part_id,
+  quest_id,
+  screen_id = "mt_id",
+  criteria,
+  time_col = NULL
+)
 }
 \arguments{
 \item{data}{A (sl_cases()) data frame with only mouse movement data.}
@@ -30,4 +37,8 @@ Initial dataframe with an indicator column names "one_obs_per_screen"
 }
 \description{
 Detecting screens with multiple visits and keep a selected screen trajectory
+}
+\examples{
+new_df <- multiple_traj(df, "mouseid", "screen", "workerId", "all")
+
 }

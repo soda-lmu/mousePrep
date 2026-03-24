@@ -8,8 +8,8 @@ mouse_class(
   data,
   screen_id = "mt_id",
   count_var = "timestamps",
-  max_cutoff = 50,
-  min_cutoff = 10
+  max_cutoff = FALSE,
+  min_cutoff = FALSE
 )
 }
 \arguments{
@@ -29,10 +29,6 @@ An object of class \code{mouse_class}.
 \description{
 This function filters participant cases based on the number of recorded
 mouse or touch movement data points per screen, using the timestamp variable.
-By default, cases with more than 50 data points are classified as mouse users,
-and cases with fewer than 10 data points are classified as touch device users.
-Cases with 10–50 data points are considered ambiguous and can be manually
-inspected (e.g., via trajectory plots).
 }
 \details{
 If only \code{max_cutoff} is specified, ambiguous devices are removed and the

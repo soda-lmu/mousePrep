@@ -2,98 +2,75 @@
 
 #' Standardize common column names to package conventions
 #'
-#' Renames frequently used variables to a standard naming scheme.
-#' Current rules (case-insensitive):
+#' This function renames frequently used variables to a standard naming scheme for mouse processing.
+#' Rule examples (case-insensitive):
 #' \itemize{
 #'   \item any name containing "worker" and "id"  -> "mt_id"
 #'   \item any name containing "time" and "stamp" -> "time_stamp"
-#'   \item any name containing "data" and "session" -> "data_session"
+#'   
 #' }
 #'
-#' The function is designed to be extended: add more rules to the internal
-#' `rules` table later.
+#' The function ican be extended to add more rules to the `rules` table later.
 #'
 #' @param data A data frame / tibble.
-#' @param verbose Logical. If TRUE, prints a small summary of renames.
+#' @param verbose Logical. If TRUE, prints a small summary of renames. The default is TRUE.
 #'
 #' @return `data` with renamed columns.
 #'
 #' @examples
-#' # df2 <- standardize_colnames(df)
+#' # df2 <- standardize_colnames(df, verbose = TRUE)
 #'
 #' @export
-#' @importFrom dplyr rename
-#' @importFrom rlang abort
-standardize_colnames <- function(data, verbose = FALSE) {
-  if (!is.data.frame(data)) {
-    rlang::abort("`data` must be a data.frame or tibble.")
+#' @importFrom dplyr rename_with setdiff
+#' @importFrom rlang inform warn
+standardize_colnames <- function(data, verbose = TRUE){
+  
+  
+  renamed_data <- data
+  stand_col <- function(colname, to) {
+    rep(to, length(colname))
   }
-  
-  old_names <- names(data)
-  
-  # Rules
   
   rules <- list(
-    list(pattern = "(?i).*worker.*id.*",      to = "mt_id"),
-    list(pattern = "(?i).*time.*stamp.*",    to = "timestamps"),
-    list(pattern = "(?i).*para. *data.*session.*",  to = "paradatasession"),
-    list(pattern = "(?i).*data.*set.*", to = "dataset"),
-    list(pattern = "(?i).*screen.*width", to = "screen_width"),
-    list(pattern = "(?i).*screen.*height", to = "screen_height"),
-    list(pattern = "(?i).*inner.*width", to = "inner_width"),
-    list(pattern = "(?i).*inner.*height", to = "inner_height"),
-    list(pattern = "(?i).*scroll.*width", to = "scroll_width"),
-    list(pattern = "(?i).*scroll.*height", to = "scroll_height")
+    list(pattern = "(?i)^(mt_id|.*worker.*id.*)$", to = "mt_id"),
+    list(pattern = "(?i)^(timestamps|.*time.*stamp.*)$", to = "timestamps"),
+    list(pattern = "(?i)^(paradatasession|.*para.*data.*session.*)$", to = "paradatasession"),
+    list(pattern = "(?i)^(dataset|.*data.*set.*)$", to = "dataset"),
+    list(pattern = "(?i)^(screen_width|.*screen.*width.*)$", to = "screen_width"),
+    list(pattern = "(?i)^(screen_height|.*screen.*height.*)$", to = "screen_height"),
+    list(pattern = "(?i)^(inner_width|.*inner.*width.*)$", to = "inner_width"),
+    list(pattern = "(?i)^(inner_height|.*inner.*height.*)$", to = "inner_height"),
+    list(pattern = "(?i)^(scroll_width|.*scroll.*width.*)$", to = "scroll_width"),
+    list(pattern = "(?i)^(scroll_height|.*scroll.*height.*)$", to = "scroll_height")
   )
   
-  new_names <- old_names
-  
-  # Apply rules in order: first match wins (prevents later rules overriding earlier ones)
-  for (i in seq_along(old_names)) {
-    nm <- old_names[i]
-    for (r in rules) {
-      if (grepl(r$pattern, nm, perl = TRUE)) {
-        new_names[i] <- r$to
-        break
-      }
+  col_matches <- logical(0)
+  for (i in seq_along(rules)){
+    rule_match <- grepl(rules[[i]]$pattern, colnames(renamed_data), perl = TRUE)
+    if (all(!rule_match)) {
+      col_matches[i] <- FALSE
+    } else{
+      col_matches[i] <- TRUE
     }
   }
-  
-  # If nothing changes, return early
-  if (identical(old_names, new_names)) return(data)
-
-  # If multiple columns map to the same standardized name, renaming would create duplicates.
-  dups <- unique(new_names[duplicated(new_names)])
-  if (length(dups) > 0) {
-    # show which originals collide
-    collision_map <- lapply(dups, function(d) old_names[new_names == d])
-    names(collision_map) <- dups
-    
-    msg <- paste0(
-      "Renaming would create duplicate column name(s): ",
-      paste(dups, collapse = ", "),
-      "\nConflicts:\n",
-      paste(
-        vapply(names(collision_map), function(d) {
-          paste0("  ", d, " <- ", paste(collision_map[[d]], collapse = ", "))
-        }, character(1)),
-        collapse = "\n"
-      ),
-      "\n\nFix by renaming one of the conflicting columns first, or extend the rules "
-    )
-    
-    rlang::abort(msg)
+  if(all(!col_matches)){
+    rlang::warn("No columns match the rule") 
   }
   
-  # Rename by setting names (fast, preserves tibble/data.frame)
-  names(data) <- new_names
   
-  if (isTRUE(verbose)) {
-    changed <- which(old_names != new_names)
-    summary <- paste0("Renamed ", length(changed), " column(s):\n",
-                      paste0("  ", old_names[changed], " -> ", new_names[changed], collapse = "\n"))
-    message(summary)
+  
+  for (i in seq_along(rules)){
+    renamed_data <- rename_with(renamed_data, stand_col, matches(rules[[i]]$pattern), to = rules[[i]]$to)
+  }
+   
+  if (verbose == TRUE){
+    renamed_cols <- setdiff(names(renamed_data), names(data))
+    rlang::inform("Renamed columns:") 
+    print(renamed_cols)
   }
   
-  data
+  
+  renamed_data
 }
+
+

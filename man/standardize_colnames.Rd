@@ -4,30 +4,29 @@
 \alias{standardize_colnames}
 \title{Standardize common column names to package conventions}
 \usage{
-standardize_colnames(data, verbose = FALSE)
+standardize_colnames(data, verbose = TRUE)
 }
 \arguments{
 \item{data}{A data frame / tibble.}
 
-\item{verbose}{Logical. If TRUE, prints a small summary of renames.}
+\item{verbose}{Logical. If TRUE, prints a small summary of renames. The default is TRUE.}
 }
 \value{
 \code{data} with renamed columns.
 }
 \description{
-Renames frequently used variables to a standard naming scheme.
-Current rules (case-insensitive):
+This function renames frequently used variables to a standard naming scheme for mouse processing.
+Rule examples (case-insensitive):
 \itemize{
 \item any name containing "worker" and "id"  -> "mt_id"
 \item any name containing "time" and "stamp" -> "time_stamp"
-\item any name containing "data" and "session" -> "data_session"
+
 }
 }
 \details{
-The function is designed to be extended: add more rules to the internal
-\code{rules} table later.
+The function ican be extended to add more rules to the \code{rules} table later.
 }
 \examples{
-# df2 <- standardize_colnames(df)
+# df2 <- standardize_colnames(df, verbose = TRUE)
 
 }

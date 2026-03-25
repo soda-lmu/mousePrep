@@ -23,7 +23,7 @@
 #' rm_cases_time(df, part_id = "mouseid", screen_id = "mt_id", time_col = "timestamps", max_time = 7)
 #' @export
 
-rm_cases_time <- function(data, part_id = FALSE, screen_id = "mt_id", time_col, max_time) {
+rm_cases_time <- function(data, part_id = FALSE, screen_id = "mt_id", time_col = "timestamps", max_time) {
   
   if (is.character(part_id)){
     

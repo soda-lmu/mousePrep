@@ -49,7 +49,8 @@
         <li><code>rm_cases()</code> — Drop invalid participants/screens/empty trajectories</li>
         <li><code>rm_cases_time()</code> — Drop cases or participants based on time spent on a question</li>
         <li><code>rm_touch_devices()</code> — Remove touch devices by rule</li>
-        <li><code>mouse_class()</code> — Drop participant cases based on the number of recorded mouse or touch movement data points per screen</li>
+        <li><code>mouse_class()</code> — Drop cases based on the number of recorded mouse or touch movement data points per screen</li>
+        <li><code>mouse_class_col()</code> — Flag cases based on the number of recorded mouse or touch movement data points per screen</li>
         <li><code>rm_non_mouse_events()</code> — Remove non-mouse movement events</li>
         <li><code>rm_resize_events()</code> — Detect and remove resize events. Option to remove trajectory or participant</li>
         
@@ -95,7 +96,7 @@
     <section>
       <h2>Merging Other Functional Data</h2>
       <ul>
-        <li><code>include_clicks()</code> — Extract click time/location and merge with trajectories</li>
+        <li><code>include_clicks()</code> — Merge click time/location with trajectories</li>
       </ul>
     </section>
 

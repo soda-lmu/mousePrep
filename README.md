@@ -66,4 +66,4 @@ A list of all package functions is available
 
 To install the package from Github, you need the devtools package . The
 development version can be installed via
-`devtools::install_github("soda-lmu\mousePrep")`.
+`devtools::install_github("soda-lmu/mousePrep")`.

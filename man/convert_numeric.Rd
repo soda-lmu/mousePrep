@@ -4,7 +4,7 @@
 \alias{convert_numeric}
 \title{Convert numeric-like columns to numeric}
 \usage{
-convert_numeric(data, exclude = NULL)
+convert_numeric(data, exclude = "mt_id")
 }
 \arguments{
 \item{data}{A data frame or tibble.}

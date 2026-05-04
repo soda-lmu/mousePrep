@@ -9,8 +9,6 @@
 #'   time-normalization of trajectories.
 #' @param hover_threshold A numeric threshold in milliseconds passed to
 #'   `mt_measures()` for hover detection. Defaults to `500`.
-#' @param id A character string giving the participant or trajectory ID column.
-#'   Defaults to `"mt_id"`.
 #'
 #' @return A mousetrap object containing: imported raw trajectories,
 #' time-normalized trajectories saved as `tn_trajectories_<nsteps>`,
@@ -21,7 +19,7 @@
 #' `measures_<nsteps>`. The `data` object contains the derivative values.
 #'
 #' @examples
-#' processed_data <- process_mt_functions(data = trajectories,nsteps = 101,hover_threshold = 500)
+#' processed_data <- mt_process_data(data = trajectories, nsteps = 101,hover_threshold = 500)
 #' 
 #'
 #' @export

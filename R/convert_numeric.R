@@ -22,7 +22,7 @@
 #'
 #' @export
 #' @importFrom dplyr mutate across all_of
-convert_numeric <- function(data, exclude = NULL){
+convert_numeric <- function(data, exclude = "mt_id"){
   
   is_numeric_like <- function(x) {
     x <- as.character(x)

@@ -15,9 +15,6 @@ time-normalization of trajectories.}
 
 \item{hover_threshold}{A numeric threshold in milliseconds passed to
 \code{mt_measures()} for hover detection. Defaults to \code{500}.}
-
-\item{id}{A character string giving the participant or trajectory ID column.
-Defaults to \code{"mt_id"}.}
 }
 \value{
 A mousetrap object containing: imported raw trajectories,
@@ -33,7 +30,7 @@ Imports mouse-tracking data in the long format, time-normalizes trajectories, co
 derivatives, and calculates summary measures using the \code{mousetrap} package.
 }
 \examples{
-processed_data <- process_mt_functions(data = trajectories,nsteps = 101,hover_threshold = 500)
+processed_data <- mt_process_data(data = trajectories, nsteps = 101,hover_threshold = 500)
 
 
 }

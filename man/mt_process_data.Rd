@@ -9,7 +9,8 @@ mt_process_data(
   nsteps,
   hover_threshold = 500,
   non_na_cols = c("timestamps", "xpos", "ypos"),
-  id = "mt_id"
+  id = "mt_id",
+  time_col = "timestamps"
 )
 }
 \arguments{

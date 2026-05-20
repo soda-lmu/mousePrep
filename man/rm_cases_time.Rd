@@ -4,7 +4,13 @@
 \alias{rm_cases_time}
 \title{Remove participants or cases based on maximum time spent on a question}
 \usage{
-rm_cases_time(data, part_id = FALSE, screen_id = "mt_id", time_col, max_time)
+rm_cases_time(
+  data,
+  part_id = FALSE,
+  screen_id = "mt_id",
+  time_col = "timestamps",
+  max_time
+)
 }
 \arguments{
 \item{data}{A data frame with the mouse movement data.}

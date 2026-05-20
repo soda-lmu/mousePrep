@@ -20,17 +20,15 @@
 #' @export
 
 include_clicks <- function(dat_complete,
-                                dat_clicks,
-                                screen_id = "mt_id",
-                                time_col = "timestamps",
-                                click_time_col = "timestamps",
-                                binary = FALSE) {
+                           dat_clicks,
+                           screen_id = "mt_id",
+                           time_col = "timestamps",
+                           click_time_col = "timestamps",
+                           binary = FALSE) {
   
   clicks <- dat_clicks %>%
-    select(
-      all_of(screen_id),
-      click_time = all_of(click_time_col)
-    ) %>%
+    select(all_of(screen_id),
+      click_time = all_of(click_time_col)) %>%
     distinct() %>%   
     filter(!is.na(click_time)) %>%
     group_by(.data[[screen_id]]) %>%
@@ -38,27 +36,24 @@ include_clicks <- function(dat_complete,
     ungroup()
   
   traj <- dat_complete %>%
-    select(
-      all_of(screen_id),
-      all_of(time_col)
-    ) %>%
+    select(all_of(c(screen_id, time_col))) %>%
     distinct() %>%
     filter(!is.na(.data[[time_col]])) %>%
     group_by(.data[[screen_id]]) %>%
     mutate(
       initiation_time = min(.data[[time_col]], na.rm = TRUE)
     ) %>%
-    ungroup() %>%
+    arrange(.data[[screen_id]], .data[[time_col]]) %>%
     mutate(
       traj_row = row_number(),
       trajectory_time = .data[[time_col]] + initiation_time
-    )
+    ) %>%
+    ungroup()
   
   matched_clicks <- clicks %>%
     inner_join(
       traj %>% select(all_of(screen_id), traj_row, trajectory_time),
-      by = screen_id
-    ) %>%
+      by = screen_id) %>%
     mutate(distance = abs(trajectory_time - click_time)) %>%
     group_by(.data[[screen_id]], click_id) %>%
     slice_min(distance, n = 1, with_ties = FALSE) %>%
@@ -70,7 +65,7 @@ include_clicks <- function(dat_complete,
   
   result <- traj %>%
     left_join(click_summary, by = c(screen_id, "traj_row")) %>%
-    mutate(click = dplyr::coalesce(click, 0L)) %>%
+    mutate(click = replace_na(click, 0L)) %>%
     select(-traj_row, -trajectory_time)
   
   return(result)

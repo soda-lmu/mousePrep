@@ -34,7 +34,7 @@ library(dplyr)
 
 # Overview
 
-`mousePrep`is data preprocessing package as a precursor to `mouseTrap` package. It helps turn raw data into clean, standardized, mouseTrap-ready datasets. The package offers a smooth and compartmentalized workflow of the data preprocessing using wrapper functions.All the package functions are exhaustive i.e., they encompass the calculations going from the raw data to the output value within the functions themselves (except standardization functions.) For this reason, it is strongly recommended that the raw datasets are always standardized and cleaned before any calculations are applied. 
+`mousePrep`is data preprocessing package as a precursor to `mouseTrap` package. It helps turn raw data into clean, standardized, mouseTrap-ready datasets. The package offers a smooth and compartmentalized workflow of the data preprocessing using wrapper functions. All the package functions are exhaustive i.e., they encompass the calculations going from the raw data to the output value within the functions themselves, except standardization functions. For this reason, it is strongly recommended that the raw datasets are always standardized and cleaned before any calculations are applied. 
 
 The package supports these broad goals:
 - column name and data type standardization,
@@ -254,7 +254,7 @@ mouse_single_visit <- multiple_traj(mouse_clean)
 `include_clicks()` indicates a trajectory as click by matching it to the nearest timestamp.
 
 ```{r include-clicks, eval = FALSE}
-mouse_with_clicks <- include_clicks(data_complete = df_merged, data_clicks = click_df)
+mouse_with_clicks <- include_clicks(dat_complete = mouse_clean, dat_clicks = click_df)
 ```
 
 This is useful when you want to analyze both movement paths and final click behavior.
@@ -287,14 +287,5 @@ write.csv(mouse_long, "data/processed/mouse_long.csv", row.names = FALSE)
 
 # Summary
 
-`mousePrep` helps organize the messy but important preprocessing steps in mouse-tracking research. The package is especially useful when raw data has inconsistent column names, mixed event types, device-related noise, timing issues, repeated screen visits, or needs to be prepared for analysis with `mousetrap`.
+`mousePrep` is a package designed primarily for UAS mouse movement datasets but can also be generalized for other mouse tracking data. The package functions take raw mouse trajectories as input and requires minimum dependency on outside functions to complete the preprocessing pipeline. The package outputs data in wide and long formats, prepared for analysis with `mousetrap`. 
 
-A good workflow is:
-
-1. standardize,
-2. clean,
-3. engineer features,
-4. flag and remove outliers,
-5. resolve repeated trajectories,
-6. process with `mousetrap`, and
-7. export long or wide datasets.

@@ -10,7 +10,7 @@ include_clicks(
   screen_id = "mt_id",
   time_col = "timestamps",
   click_time_col = "timestamps",
-  binary = TRUE
+  binary = FALSE
 )
 }
 \arguments{

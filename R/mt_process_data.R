@@ -24,7 +24,14 @@
 #'
 #' @export
 #' @importFrom mousetrap mt_import_long mt_time_normalize mt_derivatives mt_measures
-mt_process_data <- function(data, nsteps, hover_threshold = 500){
+mt_process_data <- function(data, nsteps, hover_threshold = 500, non_na_cols = c("timestamps", "xpos", "ypos"), id = "mt_id"){
+  
+  data <- data %>%
+    filter(!is.na(data[[non_na_cols]])) %>%
+    group_by(data[[id]]) %>%
+    filter(n_distinct(data[[non_na_cols]]) >= 2) %>%
+    #arrange(mt_id, timestamps) %>%
+    ungroup()
 
   data <- mt_import_long(data)
   data <- mt_time_normalize(data, 

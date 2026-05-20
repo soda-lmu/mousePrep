@@ -4,12 +4,13 @@
 #' Clicks are aligned to the closest available timestamp. As a result, the original click data frame and the resulting data frame may differ in row count.
 #' 
 #'
-#' @param data_complete A data frame with the screen ID, timestamps, and repeated initiation time
-#' @param data_clicks A data frame with the screen ID and timestamps of the clicks 
+#' @param dat_complete A data frame with the screen ID, timestamps, and repeated initiation time
+#' @param dat_clicks A data frame with the screen ID and timestamps of the clicks 
 #' @param screen_id The screen or worker ID, identifies the separated screens, one participant has multiple IDs. The screen ID should be identical for both data frames. 
-#' @param click_column The click column. 
-#' @param timestamps The timestamp column. 
-#' @param initiation_time  The initiation time column, with the initiation time repeated for each screen.
+#' @param time_col The timestamp column.
+#' @param type_col The type column for which the click dataframe can be extracted.
+#' @param click_label The factor to extract click dataframe.
+#' @param binary Optional to keep an indicator if there are 1 or more clicks. 
 #' 
 #' @return The original data frame with an additional click column. 
 #' 
@@ -18,41 +19,59 @@
 #' click_data <- include_clicks(df_complete, df_click, click_column = "timestamps")
 #' @export
 
-include_clicks  <- function(data_complete, data_clicks, screen_id = "mt_id", click_column = "timestamps", timestamps = "timestamps", initiation_time = "initiation_time") {
+include_clicks <- function(dat_complete,
+                                dat_clicks,
+                                screen_id = "mt_id",
+                                time_col = "timestamps",
+                                click_time_col = "timestamps",
+                                binary = FALSE) {
   
-  #transform click variable
-  clicks_char <- by(data_clicks[[click_column]], data_clicks[[screen_id]], function(x){
-    paste0(x, collapse = '_')
-  })
+  clicks <- dat_clicks %>%
+    select(
+      all_of(screen_id),
+      click_time = all_of(click_time_col)
+    ) %>%
+    distinct() %>%   
+    filter(!is.na(click_time)) %>%
+    group_by(.data[[screen_id]]) %>%
+    mutate(click_id = row_number()) %>%
+    ungroup()
   
-  clicks_char <- data.frame(names = names(clicks_char), clicks_char)
-  names(clicks_char)[1] <- screen_id
+  traj <- dat_complete %>%
+    select(
+      all_of(screen_id),
+      all_of(time_col)
+    ) %>%
+    distinct() %>%
+    filter(!is.na(.data[[time_col]])) %>%
+    group_by(.data[[screen_id]]) %>%
+    mutate(
+      initiation_time = min(.data[[time_col]], na.rm = TRUE)
+    ) %>%
+    ungroup() %>%
+    mutate(
+      traj_row = row_number(),
+      trajectory_time = .data[[time_col]] + initiation_time
+    )
   
-  # perform a left join
-  clicks_char <- clicks_char[clicks_char[[screen_id]] %in% data_complete[[screen_id]], ]
-  full_df <- merge(data_complete, clicks_char, by = screen_id, all.x = TRUE)
+  matched_clicks <- clicks %>%
+    inner_join(
+      traj %>% select(all_of(screen_id), traj_row, trajectory_time),
+      by = screen_id
+    ) %>%
+    mutate(distance = abs(trajectory_time - click_time)) %>%
+    group_by(.data[[screen_id]], click_id) %>%
+    slice_min(distance, n = 1, with_ties = FALSE) %>%
+    ungroup()
   
-  full_df <- as.data.frame(full_df)
+  click_summary <- matched_clicks %>%
+    count(.data[[screen_id]], traj_row, name = "click") %>%
+    mutate(click = if (binary) as.integer(click > 0) else click)
   
- 
-  #one-hot encoding of the click variable
-  click_indicator <- by(full_df[which(full_df$clicks_char!=''), c('timestamps', 'clicks_char', 'initiation_time')], full_df[[screen_id]][which(full_df$clicks_char!='')],
-                        function(x){
-                          rowSums(matrix(diag(nrow(x))[,by(abs(expand.grid(x[,1]+x[,3], as.numeric(strsplit(as.character(x[1,2]), '_')[[1]]))[,1] -
-                                                                 expand.grid(x[,1]+x[,3], as.numeric(strsplit(as.character(x[1,2]), '_')[[1]]))[,2]),
-                                                           rep(1:length(strsplit(as.character(x[1,2]), '_')[[1]]), each = nrow(x)),
-                                                           function(y){
-                                                             which.min(y)
-                                                           })], nrow = nrow(x)))})
-
-  full_df$click <- 0
-  full_df$click[which(full_df$clicks_char!='')] <- unlist(click_indicator)
-
-  return(full_df)
+  result <- traj %>%
+    left_join(click_summary, by = c(screen_id, "traj_row")) %>%
+    mutate(click = dplyr::coalesce(click, 0L)) %>%
+    select(-traj_row, -trajectory_time)
   
+  return(result)
 }
-
-
-
-
-

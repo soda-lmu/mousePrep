@@ -5,26 +5,28 @@
 \title{Include clicks to the preprocessed dataset}
 \usage{
 include_clicks(
-  data_complete,
-  data_clicks,
+  dat_complete,
+  dat_clicks,
   screen_id = "mt_id",
-  click_column = "timestamps",
-  timestamps = "timestamps",
-  initiation_time = "initiation_time"
+  time_col = "timestamps",
+  click_time_col = "timestamps",
+  binary = TRUE
 )
 }
 \arguments{
-\item{data_complete}{A data frame with the screen ID, timestamps, and repeated initiation time}
+\item{dat_complete}{A data frame with the screen ID, timestamps, and repeated initiation time}
 
-\item{data_clicks}{A data frame with the screen ID and timestamps of the clicks}
+\item{dat_clicks}{A data frame with the screen ID and timestamps of the clicks}
 
 \item{screen_id}{The screen or worker ID, identifies the separated screens, one participant has multiple IDs. The screen ID should be identical for both data frames.}
 
-\item{click_column}{The click column.}
+\item{time_col}{The timestamp column.}
 
-\item{timestamps}{The timestamp column.}
+\item{binary}{Optional to keep an indicator if there are 1 or more clicks.}
 
-\item{initiation_time}{The initiation time column, with the initiation time repeated for each screen.}
+\item{type_col}{The type column for which the click dataframe can be extracted.}
+
+\item{click_label}{The factor to extract click dataframe.}
 }
 \value{
 The original data frame with an additional click column.

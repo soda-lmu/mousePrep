@@ -4,7 +4,13 @@
 \alias{mt_process_data}
 \title{Process mouse-movement data with mousetrap}
 \usage{
-mt_process_data(data, nsteps, hover_threshold = 500)
+mt_process_data(
+  data,
+  nsteps,
+  hover_threshold = 500,
+  non_na_cols = c("timestamps", "xpos", "ypos"),
+  id = "mt_id"
+)
 }
 \arguments{
 \item{data}{A data frame containing raw mouse-tracking data in long format,

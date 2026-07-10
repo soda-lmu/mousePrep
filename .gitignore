@@ -4,3 +4,6 @@
 .Ruserdata
 docs/reference.html
 docs/index.html
+inst/doc
+/doc/
+/Meta/

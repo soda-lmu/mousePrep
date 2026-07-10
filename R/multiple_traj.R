@@ -10,10 +10,10 @@
 #' @param criteria Character string specifying how to handle multiple 
 #'   trajectories per screen:
 #'   \itemize{
-#'     \item \code{"all"} – remove the complete participant if multiple trajectories are present.
-#'     \item \code{"first"} – keep only the first recorded trajectory per screen.
-#'     \item \code{"last"} – keep only the last recorded trajectory per screen.
-#'     \item \code{"long"} – keep only the longest trajectory per screen 
+#'     \item \code{"all"} – flag the complete participant if multiple trajectories are present as TRUE.
+#'     \item \code{"first"} – flag only the first recorded trajectory per screen.
+#'     \item \code{"last"} – flag only the last recorded trajectory per screen.
+#'     \item \code{"long"} – flag only the longest trajectory per screen as TRUE
 #'     (based on the number of recorded data points).
 #'   }
 #' 

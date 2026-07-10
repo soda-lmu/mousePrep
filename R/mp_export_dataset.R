@@ -61,7 +61,7 @@ mp_export_data <- function(data, direction,
                            id = "mt_id") {
   
   if (direction != "wide" && direction != "long"){
-    stop("`direction` must be either 'long' or 'wide'")
+    rlang::abort("`direction` must be either 'long' or 'wide'.")
   }
   
   if (direction == "long" && !is.null(wide_join_data)) {

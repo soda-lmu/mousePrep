@@ -31,4 +31,7 @@ Imports:
     utils
 RoxygenNote: 7.3.3
 Suggests: 
-    prabclus
+    knitr,
+    prabclus,
+    rmarkdown
+VignetteBuilder: knitr

@@ -4,12 +4,14 @@
 \alias{standardize_colnames}
 \title{Standardize common column names to package conventions}
 \usage{
-standardize_colnames(data, verbose = TRUE)
+standardize_colnames(data, verbose = TRUE, position = "page")
 }
 \arguments{
 \item{data}{A data frame / tibble.}
 
 \item{verbose}{Logical. If TRUE, prints a small summary of renames. The default is TRUE.}
+
+\item{position}{A character string specifying the columns to be renamed to xpos and ypos. The default is \code{page}}
 }
 \value{
 \code{data} with renamed columns.

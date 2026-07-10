@@ -47,12 +47,7 @@
       <h4>Case filtering </h4>
       <ul>    
         <li><code>rm_cases()</code> — Drop invalid participants/screens/empty trajectories</li>
-        <li><code>rm_cases_time()</code> — Drop cases or participants based on time spent on a question</li>
-        <li><code>rm_touch_devices()</code> — Remove touch devices by rule</li>       
-        <li><code>mouse_class()</code> — Drop cases based on the number of recorded mouse or touch movement data points per screen</li>
-        <li><code>mouse_class_col()</code> — Flag cases based on the number of recorded mouse or touch movement data points per screen</li>
-        <li><code>rm_non_mouse_events()</code> — Remove non-mouse movement events</li>
-        <li><code>rm_resize_events()</code> — Detect and remove resize events. Option to remove trajectory or participant</li>
+        <li><code>sl_cases()</code> — Filter cases based on any criteria</li>
         
       </ul>
     </section>
@@ -78,10 +73,11 @@
 
     <section>
       <h2>Outlier detection based on timing features</h2>
-      After timing features are computed, outliers can be detected and handled using the following functions.
       <ul>
+        <li><code>mouse_class()</code> — Drop cases based on the number of recorded mouse or touch movement data points per screen</li>
+        <li><code>mouse_class_col()</code> — Flag cases based on the number of recorded mouse or touch movement data points per screen</li>
+        After timing features are computed, outliers can be detected and handled using the following functions.
         <li><code>flag_outliers()</code> — Flag outliers. Option to flag based on data-driven or fixed thresholds</li>
-        <li><code>rm_outliers()</code> — Remove outliers based on the flagged observations </li>
       </ul>
     </section>
 
@@ -96,7 +92,7 @@
     <section>
       <h2>Merging Other Functional Data</h2>
       <ul>
-        <li><code>include_clicks()</code> — Merge click time/location with trajectories</li>
+        <li><code>include_clicks()</code> — Indicates a trajectory as click by matching it to the nearest timestamp.</li>
       </ul>
     </section>
 
@@ -110,7 +106,7 @@
     <section>
       <h2>Export & reporting</h2>
       <ul>
-        <li><code>mp_export_dataset()</code> — Export cleaned dataset in long or wide formats</li>
+        <li><code>mp_export_dataset()</code> — Export cleaned dataset in long or wide formats and optionally merge with other datasets</li>
       </ul>
     </section>
   </div>

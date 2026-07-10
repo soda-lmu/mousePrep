@@ -24,8 +24,18 @@
 #'
 #' @export
 #' @importFrom mousetrap mt_import_long mt_time_normalize mt_derivatives mt_measures
-mt_process_data <- function(data, nsteps, hover_threshold = 500){
-
+mt_process_data <- function(data, nsteps, hover_threshold = 500, non_na_cols = c("timestamps", "xpos", "ypos"), id = "mt_id", time_col = "timestamps"){
+  
+  data <- data %>%
+    filter(if_all(all_of(non_na_cols), ~ !is.na(.x))) %>%
+    group_by(.data[[id]]) %>%
+    filter(if_all(all_of(time_col), ~ n_distinct(.x) >= 2)) %>%
+    ungroup() %>%
+    arrange(.data[[id]], .data[[time_col]]) %>%
+    group_by(.data[[id]]) %>%
+    mutate(mt_seq = row_number()) %>%
+    ungroup()
+  
   data <- mt_import_long(data)
   data <- mt_time_normalize(data, 
                             use = 'trajectories', 
@@ -39,9 +49,8 @@ mt_process_data <- function(data, nsteps, hover_threshold = 500){
                       use = paste('tn_trajectories', nsteps, sep = "_"), 
                       save_as = paste("measures", nsteps, sep = "_"), 
                       hover_threshold = hover_threshold)
-                      
-                                   
+  
+  
   
   data
 }
-

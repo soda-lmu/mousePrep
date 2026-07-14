@@ -35,7 +35,7 @@ A typical workflow is:
     processing.
 
 <figure>
-<img src="docs/assets/MousePrep_white.png" alt="mousePrep preprocessing workflow" />
+<img src="docs/figures/MousePrep_white.png" alt="mousePrep preprocessing workflow" />
 <figcaption aria-hidden="true">mousePrep preprocessing
 workflow</figcaption>
 </figure>

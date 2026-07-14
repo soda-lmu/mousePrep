@@ -3,7 +3,7 @@ README
 
 <!-- README.md is generated from README.Rmd. Please edit README.Rmd -->
 
-<img src="mousePrep_icon.png" align="right" width="120"/>
+<img src="docs/assets/mousePrep_icon.png" align="right" width="120"/>
 
 # mousePrep Package
 
@@ -35,7 +35,7 @@ A typical workflow is:
     processing.
 
 <figure>
-<img src="MousePrep_white.png" alt="mousePrep preprocessing workflow" />
+<img src="docs/assets/MousePrep_white.png" alt="mousePrep preprocessing workflow" />
 <figcaption aria-hidden="true">mousePrep preprocessing
 workflow</figcaption>
 </figure>

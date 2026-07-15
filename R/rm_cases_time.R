@@ -32,7 +32,7 @@ rm_cases_time <- function(data, part_id = FALSE, screen_id = "mt_id", time_col =
     resp_time <- data.frame(screen_id = names(resp_time), resp_time = as.numeric(resp_time))
     resp_time$resp_time <- resp_time$resp_time 
     
-    rm_part <- resp_time$screen_id[which(resp_time$resp_time<=0|resp_time$resp_time> max_time)] #vector of bad screen IDs
+    rm_part <- resp_time$screen_id[which(resp_time$resp_time<=0|resp_time$resp_time> max_time)] 
     
     #select the cases needed
     rm_part_uasid <- data[which(data[[screen_id]] %in% rm_part),]  

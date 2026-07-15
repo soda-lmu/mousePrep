@@ -2,9 +2,10 @@
 .Rhistory
 .RData
 .Ruserdata
-README.Rmd
 docs/reference.html
 docs/index.html
-inst/doc
+inst
 /doc/
 /Meta/
+Data_info/
+

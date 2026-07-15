@@ -10,10 +10,10 @@
 #' @param criteria Character string specifying how to handle multiple 
 #'   trajectories per screen:
 #'   \itemize{
-#'     \item \code{"all"} – flag the complete participant if multiple trajectories are present as TRUE.
-#'     \item \code{"first"} – flag only the first recorded trajectory per screen.
-#'     \item \code{"last"} – flag only the last recorded trajectory per screen.
-#'     \item \code{"long"} – flag only the longest trajectory per screen as TRUE
+#'     \item \code{"all"} ??? flag the complete participant if multiple trajectories are present as TRUE.
+#'     \item \code{"first"} ??? flag only the first recorded trajectory per screen.
+#'     \item \code{"last"} ??? flag only the last recorded trajectory per screen.
+#'     \item \code{"long"} ??? flag only the longest trajectory per screen as TRUE
 #'     (based on the number of recorded data points).
 #'   }
 #' 
@@ -31,8 +31,8 @@ multiple_traj <- function(data, part_id,  quest_id, screen_id = "mt_id", criteri
     data$combi <- paste0(data[[part_id]], '-', data[[quest_id]])
     
     data$multiple_workers <- ave(data[[screen_id]],
-                                data$combi,
-                                FUN = function(x) length(unique(x))) > 1
+                                 data$combi,
+                                 FUN = function(x) length(unique(x))) > 1
     data$combi <- NULL
     return(data)
     
@@ -79,5 +79,3 @@ multiple_traj <- function(data, part_id,  quest_id, screen_id = "mt_id", criteri
   }
   
 }
-
-

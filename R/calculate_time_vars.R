@@ -5,7 +5,7 @@
 #' response time is the latest timestamp, and move time is the difference
 #' between response time and initiation time.
 #'
-#' @param data A data frame or tibble.
+#' @param data Any mouse trajectory data frame or tibble.
 #' @param id A character string naming the participant or trial ID column.
 #'   Defaults to `"mt_id"`.
 #' @param timestamps A character string naming the timestamp column, measured

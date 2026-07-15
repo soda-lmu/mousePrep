@@ -6,12 +6,14 @@
 #' If `uas = TRUE`, the function uses UAS default column names and defaults for
 #' filtering columns, so you can call the function with only `data`.
 #'
-#' @param data A data frame / tibble.
+#' @param data Any mouse trajectory dataset that contains inner and scroll dimensions of the screen.
 #' @param uas Logical. If TRUE, use UAS defaults for columns and filtering.
-#' @param inner_width,inner_height,scroll_width,scroll_height Column specs (string).
-#' @param screen_width,screen_height Replace existing screen height and width using the calculation.
+#' @param inner_width,inner_height,scroll_width,scroll_height Column specs (string). 
+#' Inner dimensions correspond to the screen visible in the browser while scroll dimensions are of the physical monitor.
+#' @param screen_width,screen_height Screen height and screen width. If it exists in the data and wish to 
+#' replace with the calculation, input the variable names.
 #'
-#' @return Dataset with computed width/height columns.
+#' @return Dataset with (re)computed screen width and screen height columns.
 #' 
 #' @examples
 #' # screen_dims_data <- calculate_screen_dims(df) 

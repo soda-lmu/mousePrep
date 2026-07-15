@@ -84,10 +84,10 @@ A typical dataset may include:
 | Column type | Example columns | Description |
 |---|---|---|
 | Participant ID | `mt_id`, `worker_id`, `participant_id` | Identifies participants or trajectories |
-| Question or screen ID | `question_id`, `screen_id` | Survey item, screen, or task identifier |
+| Question or screen ID | `question_id`, `screen_id` | Survey item, screen, or task identifier. One participant can have multiple screen IDs |
 | Time variable | `timestamps`, `timeStamp`, `time` | Time of each recorded event |
 | Coordinates | `xpos`, `ypos`, `ClientX`, `ClientY` | Mouse position |
-| Screen dimensions | `inner_width`, `inner_height`, `scroll_width`, `scroll_height` | Browser and page dimensions |
+| Screen dimensions | `inner_width`, `inner_height`, `scroll_width`, `scroll_height` | Browser and page dimensions. Inner dimensions correspond to the screen visible in the browser while scroll dimensions are of the physical monitor. |
 | Event type | `type`, `event_type` | Mouse move, click, resize, touch, etc. |
 | User type | `userAgent_is_pc`, `userAgent_is_mobile` | User devise and browser family |
 
@@ -141,7 +141,7 @@ mouse_std <- convert_numeric(mouse_std)
 
 ## Remove invalid cases
 
-Use `rm_cases()` to remove invalid participants, screens, or empty trajectories.
+Use `rm_cases()` to remove invalid participants, screens, or empty trajectories. Use criteria 1 to remove only the screen/worker ID where the criterion is met while criteria 2 removes all data from the participant.
 
 ```{r rm-cases, echo=TRUE}
 mouse_clean <- mouse_std %>%
@@ -155,7 +155,7 @@ mouse_clean <- mouse_std %>%
 
 ## Create click dataset
 
-If certain type of trajectories have to be subsetted, use `sl_cases`.
+If certain type of trajectories have to be subsetted, use `sl_cases`. It's another filter function that could be used to create new dataframes. 
 
 ```{r rm-touch-devices, eval = FALSE}
 click_df <- sl_cases(mouse_clean, column_sl = "type", factor_sl = "click")
@@ -166,7 +166,7 @@ click_df <- sl_cases(mouse_clean, column_sl = "type", factor_sl = "click")
 
 ## Calculate screen dimensions
 
-`screen_dims_calculate()` computes screen width and height from available inner and scroll dimensions.
+`calculate_screen_dims()` computes screen width and screen height. It will rewrite the values if the columns already exist. The inputs used are inner height, inner width, scroll width and scroll height.
 
 ```{r screen-dims, eval = FALSE}
 screen_dims_data <- calculate_screen_dims(mouse_clean)

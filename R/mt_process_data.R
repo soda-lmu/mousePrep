@@ -41,7 +41,7 @@ mt_process_data <- function(data, nsteps, hover_threshold = 500, non_na_cols = c
                             use = 'trajectories', 
                             nsteps = nsteps, 
                             save_as = paste('tn_trajectories', 
-                                            nsteps, sep = "_"))
+                                            101, sep = "_"))
   data <- mt_derivatives(data, 
                          use = paste('tn_trajectories', 
                                      nsteps, sep = "_"))

@@ -3,22 +3,22 @@ README
 
 <!-- README.md is generated from README.Rmd. Please edit README.Rmd -->
 
-<img src="docs/assets/mousePrep_icon.png" align="right" width="120" />
+<img src="docs/assets/mousePrep_icon.png" align="right" width="120"/>
 
 # mousePrep Package
 
 `mousePrep` provides a lightweight set of preprocessing utilities for
 **mouse movement datasets**. It helps turn raw, mouse logs (often
-containing inconsistent column names, mixed event types and device,
-timing issues etc) into **clean, standardized, analysis-ready**
+containing inconsistent column names, mixed event types and devices,
+timing issues, etc.) into **clean, standardized, analysis-ready**
 trajectory tables.
 
 The package focuses on the practical steps that typically come before
-modelingmachine learning: standardizing raw inputs, filtering and
-scoping to valid observations, handling device and event-related
-observations (e.g., touch devices, resize events), calculating and
-aligning time variables, resolving repeated visits, and preparing
-outputs that can be exported in desired formats.
+modeling: standardizing raw inputs, filtering and scoping to valid
+observations, handling device and event-related observations (e.g.,
+touch devices, resize events), calculating and aligning time variables,
+resolving repeated visits, and preparing outputs that can be exported in
+desired formats.
 
 ## Workflow overview
 
@@ -26,27 +26,26 @@ A typical workflow is:
 
 1.  **Standardize raw inputs** so the upcoming functions can be applied
     consistently.
-2.  **Clean** remove invalid trajectories.
-3.  **Feature transformations** derive screen geometry and key time
-    variables (e.g., initiation time, response time, move time).
-4.  **Handle outliers** such as flagging and removingslow-move outliers,
-    and repeated visits per screen.
-5.  **Export a cleaned dataset** export the clean and standardized
-    output for further processing.
+2.  **Remove** invalid trajectories.
+3.  **Derive** screen geometry and key time variables (e.g., initiation
+    time, response time, move time).
+4.  **Handle outliers** such as flagging and removing slow trajectories
+    or repeated visits per screen.
+5.  **Export a cleaned data set** with standardized outputs for further
+    processing.
 
 <figure>
-<img src="docs/figures/MousePrep_white.png"
-alt="mousePrep preprocessing workflow" />
+<img src="docs/figures/MousePrep_white.png" alt="mousePrep preprocessing workflow" />
 <figcaption aria-hidden="true">mousePrep preprocessing
 workflow</figcaption>
 </figure>
 
 ## Standardization first
 
-For consistent use of the functions, it is recommended that the raw
-datasets are standardized using `standardize_cols()`. This step maps
-column names and formats into a common schema, which will reduce the
-need to specify parameter names in later functions.
+For consistent use of the functions, it is recommended that the raw data
+sets are standardized using `standardize_cols()`. This step maps column
+names and formats into a common schema, which will reduce the need to
+specify parameter names in later functions.
 
 ## Precursor to `mousetrap`
 
@@ -60,12 +59,13 @@ analysis workflows after preprocessing.
 ## Reference
 
 A list of all package functions is available
-**[here](https://soda-lmu.github.io/mousePrep/reference.html)**.
+[**here**](https://soda-lmu.github.io/mousePrep/reference.html).
 
 ## Installation guide
 
 To install the package from Github, you need the devtools package . The
 development version can be installed via
-`devtools::install_github("soda-lmu/mousePrep")`. To build and access
-the vignette, install with
+`devtools::install_github("soda-lmu/mousePrep")`.
+
+To build and access the vignette, install with
 `devtools::install_github("soda-lmu/mousePrep", build_vignettes = TRUE)`

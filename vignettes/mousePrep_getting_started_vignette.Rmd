@@ -83,8 +83,9 @@ A typical dataset may include:
 
 | Column type | Example columns | Description |
 |---|---|---|
-| Participant ID | `mt_id`, `worker_id`, `participant_id` | Identifies participants or trajectories |
+| Participant ID | `participant_id` | Identifies participant |
 | Question or screen ID | `question_id`, `screen_id` | Survey item, screen, or task identifier. One participant can have multiple screen IDs |
+| Trajectory ID | `worker_id`,`mt_id`  | Identifies mouse or other event trajectories. The lowest level of the dataset is assumed to be trajectory |
 | Time variable | `timestamps`, `timeStamp`, `time` | Time of each recorded event |
 | Coordinates | `xpos`, `ypos`, `ClientX`, `ClientY` | Mouse position |
 | Screen dimensions | `inner_width`, `inner_height`, `scroll_width`, `scroll_height` | Browser and page dimensions. Inner dimensions correspond to the screen visible in the browser while scroll dimensions are of the physical monitor. |
@@ -100,11 +101,13 @@ raw_data <- read.csv("data/raw_mouse_data.csv")
 
 # Example data structure
 
-(Replace this with your own imported data.)
+This a toy dataset. Replace this with your own imported data. 
+To complete the mousePrep workflow, it is expected that the dataset has columns indicating some kind of mouse trajectory ID, type of movement, recorded time of the movement and the coordinates of screen elements. 
 
 ```{r toy-data, echo=TRUE}
 mouse_raw <- tibble::tibble(
-  workerId = rep(c("p1", "p2"), each = 5),
+  partId = rep("p1", 10),
+  workerId = rep(c("m1", "m2"), each = 5),
   screenId = rep("q1", 10),
   timestamp = c(0, 100, 250, 400, 700, 0, 120, 260, 410, 800),
   xpos = c(10, 20, 35, 50, 80, 12, 24, 40, 55, 90),
@@ -131,17 +134,17 @@ mouse_std <- standardize_colnames(mouse_raw, verbose = TRUE)
 
 ## Convert numeric columns
 
-`convert_numeric()` converts commonly appearing numeric-like columns to numeric type. A column is treated as numeric-like if all of its non-missing and non-empty values can be converted to numeric after standardizing symbols.
+`convert_numeric()` converts commonly appearing numeric-like columns to numeric type. A column is treated as numeric-like if all of its non-missing and non-empty values can be converted to numeric after standardizing symbols. If you need to exclude specific columns, they can be specified under `exclude`.
 
 ```{r convert-numeric, eval = FALSE}
-mouse_std <- convert_numeric(mouse_std)
+mouse_std <- convert_numeric(mouse_std, exclude = "workerId")
 ```
 
 # 2. Filter invalid cases and events
 
 ## Remove invalid cases
 
-Use `rm_cases()` to remove invalid participants, screens, or empty trajectories. Use criteria 1 to remove only the screen/worker ID where the criterion is met while criteria 2 removes all data from the participant.
+Use `rm_cases()` to remove invalid participants, screens, or empty trajectories. It is a filtering function. Use criteria 1 to remove only the screen/question ID (or a lower unit of identification) where the criterion is met while criteria 2 removes all data from the participant (or a higher unit of identification). For criteria 2, both screen ID as well as participant ID need to be specified. Input the filter column in `column_rm` and the category to be removed in `factor_rm`. 
 
 ```{r rm-cases, echo=TRUE}
 mouse_clean <- mouse_std %>%
@@ -155,7 +158,7 @@ mouse_clean <- mouse_std %>%
 
 ## Create click dataset
 
-If certain type of trajectories have to be subsetted, use `sl_cases`. It's another filter function that could be used to create new dataframes. 
+`sl_cases` is a function to select certain rows of the dataframe. If certain trajectories or screens have to be subsetted, use `sl_cases`. It's another filter function that could be used to create new dataframes. Input the filter column in `column_sl` and the category to be selected in `factor_sl`. The illustrated example is to create a data object where the event type is only clicks. 
 
 ```{r rm-touch-devices, eval = FALSE}
 click_df <- sl_cases(mouse_clean, column_sl = "type", factor_sl = "click")
@@ -166,10 +169,10 @@ click_df <- sl_cases(mouse_clean, column_sl = "type", factor_sl = "click")
 
 ## Calculate screen dimensions
 
-`calculate_screen_dims()` computes screen width and screen height. It will rewrite the values if the columns already exist. The inputs used are inner height, inner width, scroll width and scroll height.
+`calculate_screen_dims()` computes screen width and screen height. It will rewrite the values if the columns already exist. The inputs used are inner height, inner width, scroll width and scroll height. Inner dimensions correspond to the screen visible in the browser while scroll dimensions are of the physical monitor. The function removes all rows where all the input dimensions are missing before applying calculations.  
 
 ```{r screen-dims, eval = FALSE}
-screen_dims_data <- calculate_screen_dims(mouse_clean)
+screen_dims_data <- calculate_screen_dims(mouse_clean, uas = TRUE)
 ```
 
 If you are working with UAS-style datasets, set `uas = TRUE` and the function uses UAS default column names and defaults for selecting columns, so you can call the function with only `data`.
@@ -177,15 +180,17 @@ If you are working with UAS-style datasets, set `uas = TRUE` and the function us
 
 ## Calculate timing variables
 
-`time_vars_calculate()` derives key timing variables from trajectory timestamps.
+`time_vars_calculate()` derives key timing variables from trajectory timestamps. The required input variables are grouping ID and timestamps. 
 
-The outputs include:
+The output data includes:
 
 | Variable | Meaning |
 |---|---|
 | `initiation_time` | Time until first movement |
 | `response_time` | Total time spent on the screen or question |
 | `move_time` | Time between movement initiation and response |
+These time variables are calculated by the grouping level (participant, screen, trajectory). The function removes missing timestamps before applying the calculations. 
+
 
 ```{r time-vars, eval = FALSE}
 time_df <- calculate_time_vars(mouse_clean)
@@ -195,22 +200,20 @@ time_df <- calculate_time_vars(mouse_clean)
 
 ## Remove cases based on time spent
 
-`rm_cases_time()` removes cases or participants based on total time spent on a question or screen.
+`rm_cases_time()` can be used to remove cases where the time spent on a question exceeds a predefined threshold either at the participant level or at the screen (case) level. If the option to aggregate time at a higher grouping level (eg., participant) is chosen, then the grouping ID must be provided.   
 
 ```{r rm-cases-time, eval = FALSE}
-mouse_time_flag <- rm_cases_time(mouse_clean, max_time = 7)
+mouse_time_flag <- rm_cases_time(mouse_clean, time_agg = FALSE, part_id = FALSE, screen_id = "mt_id", max_time = 420000)
 ```
 
 ## Classify mouse movement density
 
-`mouse_class()` and `mouse_class_col()` help identify cases with too few recorded mouse or touch movement points per screen.
-
-Use `mouse_class()` when you want to remove these cases directly. 
-Use `mouse_class_col()` when you want to flag cases first and decide later whether to remove them.
+`mouse_touch_indicator` is a function that can be used to flag mouse and touch screens/devices based on the number of recorded movements. There is a numeric cutoff used to distinguish touch from mouse input. Screens with at most this number of events are classified as touch. Currently the cutoff defaults to 50. 
+While, `mouse_class()` allows you to specify a minimum and maximum cutoff and outputs a filtered dataset based on the cutoff values provided.  
 
 ```{r mouse-class, eval = FALSE}
-mousemove_flag <- mouse_class(mouse_clean, max_cutoff = 50)
-mousemove_remove <- mouse_class_col(mouse_clean, max_cutoff = 50)
+mousemove_flag <- mouse_class(mouse_clean, min_cutoff = 10,max_cutoff = 50)
+mousemove_remove <- mouse_class_col(mouse_clean, max_cutoff = 50, traj_id = "mt_id",max_cutoff = 50,level = "screen")
 ```
 
 
@@ -218,21 +221,18 @@ mousemove_remove <- mouse_class_col(mouse_clean, max_cutoff = 50)
 
 ## Based on timing variables
 
-`flag_outliers()` can flag unusual observations using data-driven rules or fixed thresholds.
-`"data"`, values are flagged as outliers when they are greater than the mean plus two standard deviation
+`flag_outliers()` can flag observations with outlier move time using data-driven rules or fixed thresholds. Either `data` or `threshold`criterion can be chosen for outlier identification.
+
+`data`, values are flagged as outliers when they are greater than the mean plus two standard deviation of the calculated move time
 
 ```{r flag-outliers-data, eval = FALSE}
-mouse_flag <- flag_outliers(time_df,
-    flag_outliers = "data",
-    filter_var = "move_time")
+mouse_flag <- flag_outliers(time_df,flag_outliers = "data",filter_var = "move_time")
 ```
 
 You can also use a fixed threshold.
 
 ```{r flag-outliers-threshold, eval = FALSE}
-mouse_flag <- flag_outliers(time_df,
-    flag_outliers = "threshold",
-    filter_var = "move_time")
+mouse_flag <- flag_outliers(time_df,flag_outliers = "threshold",filter_var = "move_time", outlier_threshold = 12e4)
 ```
 
 Once outliers are flagged, use `rm_cases()` to remove them.
@@ -241,20 +241,22 @@ Once outliers are flagged, use `rm_cases()` to remove them.
 
 ## Repeated trajectories
 
-Some participants may visit the same screen or question multiple times. `multiple_traj()` gives the option of flagging the whole participant if they have multiple trajectories or flag only their first, last, or longest trajectory.
+There may be multiple visits to the same screen or question multiple times. `multiple_traj()` detects such screens. It outputs a dataframe with two flag indicators - `multiple_workers` and `selected trajectory`. `multiple_workers` is TRUE when when a screen contains more than one trajectory and FALSE otherwise. `selected trajectory`TRUE for selected trajectories based on the criteria, FALSE for non-selected trajectories on screens with multiple trajectories, and NA for screens with only one trajectory. 
 
 ```{r multiple-traj, eval = FALSE}
-mouse_single_visit <- multiple_traj(mouse_clean)
+mouse_single_visit <- multiple_traj(mouse_clean, screen_id = "screen_id", traj_id = "mt_id", criteria = "long", time_col = "timestamps" )
 ```
  
-`rm_cases()` to remove the repeated visits if needed.
+Use `rm_cases()` to remove the repeated visits if needed.
 
 ## Include click data
 
-`include_clicks()` indicates a trajectory as click by matching it to the nearest timestamp.
+`include_clicks()` indicates a trajectory as click by matching it to the nearest timestamp and returns a dataframe with an indicator column for number of clicks associated with a trajectory timestamp. 
+Two dataframes have to be provided; `data_complete`  - must include the columns specified by `screen_id` and `time_col` and `data_clicks`- must include the columns specified by `screen_id` and `click_time_col`.
 
 ```{r include-clicks, eval = FALSE}
-mouse_with_clicks <- include_clicks(dat_complete = mouse_clean, dat_clicks = click_df)
+mouse_with_clicks <- include_clicks(data_complete = mouse_clean, data_clicks = click_df, screen_id = "mt_id",
+                                    time_col = "timestamps",click_time_col = "timestamps")
 ```
 
 This is useful when you want to analyze both movement paths and final click behavior.

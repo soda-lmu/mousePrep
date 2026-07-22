@@ -6,7 +6,7 @@
 \usage{
 rm_cases(
   data,
-  part_id = "mouseid",
+  part_id = FALSE,
   screen_id = "mt_id",
   column_rm,
   factor_rm,

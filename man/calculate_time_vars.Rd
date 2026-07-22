@@ -7,7 +7,7 @@
 calculate_time_vars(data, id = "mt_id", timestamps = "timestamps")
 }
 \arguments{
-\item{data}{A data frame or tibble.}
+\item{data}{Any mouse trajectory data frame or tibble.}
 
 \item{id}{A character string naming the participant or trial ID column.
 Defaults to \code{"mt_id"}.}
@@ -23,7 +23,8 @@ A data frame with one row per \code{id} and three computed variables:
 Computes initiation time, response time, and move time for each participant
 or trial ID. Initiation time is the earliest timestamp within each group,
 response time is the latest timestamp, and move time is the difference
-between response time and initiation time.
+between response time and initiation time. Removes all the rows where timestamps
+are NA.
 }
 \examples{
 # time_data <- calculate_time_vars(df)

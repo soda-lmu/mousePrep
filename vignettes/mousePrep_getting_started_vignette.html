@@ -12,7 +12,7 @@
 
 <meta name="author" content="Aida Kreider, Theerdha Sara Reji, Tobias Wistuba, Lisa Bondo Andersen" />
 
-<meta name="date" content="2026-07-10" />
+<meta name="date" content="2026-07-19" />
 
 <title>Getting started with mousePrep</title>
 
@@ -342,7 +342,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <h1 class="title toc-ignore">Getting started with mousePrep</h1>
 <h4 class="author">Aida Kreider, Theerdha Sara Reji, Tobias Wistuba,
 Lisa Bondo Andersen</h4>
-<h4 class="date">2026-07-10</h4>
+<h4 class="date">2026-07-19</h4>
 
 
 
@@ -414,40 +414,47 @@ trajectory.</p>
 <tbody>
 <tr class="odd">
 <td>Participant ID</td>
-<td><code>mt_id</code>, <code>worker_id</code>,
-<code>participant_id</code></td>
-<td>Identifies participants or trajectories</td>
+<td><code>participant_id</code></td>
+<td>Identifies participant</td>
 </tr>
 <tr class="even">
 <td>Question or screen ID</td>
 <td><code>question_id</code>, <code>screen_id</code></td>
-<td>Survey item, screen, or task identifier. A participant can have
+<td>Survey item, screen, or task identifier. One participant can have
 multiple screen IDs</td>
 </tr>
 <tr class="odd">
+<td>Trajectory ID</td>
+<td><code>worker_id</code>,<code>mt_id</code></td>
+<td>Identifies mouse or other event trajectories. The lowest level of
+the dataset is assumed to be trajectory</td>
+</tr>
+<tr class="even">
 <td>Time variable</td>
 <td><code>timestamps</code>, <code>timeStamp</code>,
 <code>time</code></td>
 <td>Time of each recorded event</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>Coordinates</td>
 <td><code>xpos</code>, <code>ypos</code>, <code>ClientX</code>,
 <code>ClientY</code></td>
 <td>Mouse position</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>Screen dimensions</td>
 <td><code>inner_width</code>, <code>inner_height</code>,
 <code>scroll_width</code>, <code>scroll_height</code></td>
-<td>Browser and page dimensions</td>
+<td>Browser and page dimensions. Inner dimensions correspond to the
+screen visible in the browser while scroll dimensions are of the
+physical monitor.</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>Event type</td>
 <td><code>type</code>, <code>event_type</code></td>
 <td>Mouse move, click, resize, touch, etc.</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>User type</td>
 <td><code>userAgent_is_pc</code>, <code>userAgent_is_mobile</code></td>
 <td>User devise and browser family</td>
@@ -459,19 +466,24 @@ multiple screen IDs</td>
 </div>
 <div id="example-data-structure" class="section level1">
 <h1>Example data structure</h1>
-<p>(Replace this with your own imported data.)</p>
+<p>This a toy dataset. Replace this with your own imported data. To
+complete the mousePrep workflow, it is expected that the dataset has
+columns indicating some kind of mouse trajectory ID, type of movement,
+recorded time of the movement and the coordinates of screen
+elements.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a>mouse_raw <span class="ot">&lt;-</span> tibble<span class="sc">::</span><span class="fu">tibble</span>(</span>
-<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>  <span class="at">workerId =</span> <span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">&quot;p1&quot;</span>, <span class="st">&quot;p2&quot;</span>), <span class="at">each =</span> <span class="dv">5</span>),</span>
-<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a>  <span class="at">screenId =</span> <span class="fu">rep</span>(<span class="st">&quot;q1&quot;</span>, <span class="dv">10</span>),</span>
-<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a>  <span class="at">timestamp =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">100</span>, <span class="dv">250</span>, <span class="dv">400</span>, <span class="dv">700</span>, <span class="dv">0</span>, <span class="dv">120</span>, <span class="dv">260</span>, <span class="dv">410</span>, <span class="dv">800</span>),</span>
-<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a>  <span class="at">xpos =</span> <span class="fu">c</span>(<span class="dv">10</span>, <span class="dv">20</span>, <span class="dv">35</span>, <span class="dv">50</span>, <span class="dv">80</span>, <span class="dv">12</span>, <span class="dv">24</span>, <span class="dv">40</span>, <span class="dv">55</span>, <span class="dv">90</span>),</span>
-<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a>  <span class="at">ypos =</span> <span class="fu">c</span>(<span class="dv">15</span>, <span class="dv">25</span>, <span class="dv">45</span>, <span class="dv">60</span>, <span class="dv">90</span>, <span class="dv">18</span>, <span class="dv">32</span>, <span class="dv">50</span>, <span class="dv">70</span>, <span class="dv">95</span>),</span>
-<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a>  <span class="at">eventType =</span> <span class="fu">rep</span>(<span class="st">&quot;mousemove&quot;</span>, <span class="dv">10</span>),</span>
-<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a>  <span class="at">innerWidth =</span> <span class="fu">rep</span>(<span class="dv">1200</span>, <span class="dv">10</span>),</span>
-<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a>  <span class="at">innerHeight =</span> <span class="fu">rep</span>(<span class="dv">800</span>, <span class="dv">10</span>),</span>
-<span id="cb4-10"><a href="#cb4-10" tabindex="-1"></a>  <span class="at">scrollWidth =</span> <span class="fu">rep</span>(<span class="dv">1200</span>, <span class="dv">10</span>),</span>
-<span id="cb4-11"><a href="#cb4-11" tabindex="-1"></a>  <span class="at">scrollHeight =</span> <span class="fu">rep</span>(<span class="dv">1000</span>, <span class="dv">10</span>)</span>
-<span id="cb4-12"><a href="#cb4-12" tabindex="-1"></a>)</span></code></pre></div>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>  <span class="at">partId =</span> <span class="fu">rep</span>(<span class="st">&quot;p1&quot;</span>, <span class="dv">10</span>),</span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a>  <span class="at">workerId =</span> <span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">&quot;m1&quot;</span>, <span class="st">&quot;m2&quot;</span>), <span class="at">each =</span> <span class="dv">5</span>),</span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a>  <span class="at">screenId =</span> <span class="fu">rep</span>(<span class="st">&quot;q1&quot;</span>, <span class="dv">10</span>),</span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a>  <span class="at">timestamp =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">100</span>, <span class="dv">250</span>, <span class="dv">400</span>, <span class="dv">700</span>, <span class="dv">0</span>, <span class="dv">120</span>, <span class="dv">260</span>, <span class="dv">410</span>, <span class="dv">800</span>),</span>
+<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a>  <span class="at">xpos =</span> <span class="fu">c</span>(<span class="dv">10</span>, <span class="dv">20</span>, <span class="dv">35</span>, <span class="dv">50</span>, <span class="dv">80</span>, <span class="dv">12</span>, <span class="dv">24</span>, <span class="dv">40</span>, <span class="dv">55</span>, <span class="dv">90</span>),</span>
+<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a>  <span class="at">ypos =</span> <span class="fu">c</span>(<span class="dv">15</span>, <span class="dv">25</span>, <span class="dv">45</span>, <span class="dv">60</span>, <span class="dv">90</span>, <span class="dv">18</span>, <span class="dv">32</span>, <span class="dv">50</span>, <span class="dv">70</span>, <span class="dv">95</span>),</span>
+<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a>  <span class="at">eventType =</span> <span class="fu">rep</span>(<span class="st">&quot;mousemove&quot;</span>, <span class="dv">10</span>),</span>
+<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a>  <span class="at">innerWidth =</span> <span class="fu">rep</span>(<span class="dv">1200</span>, <span class="dv">10</span>),</span>
+<span id="cb4-10"><a href="#cb4-10" tabindex="-1"></a>  <span class="at">innerHeight =</span> <span class="fu">rep</span>(<span class="dv">800</span>, <span class="dv">10</span>),</span>
+<span id="cb4-11"><a href="#cb4-11" tabindex="-1"></a>  <span class="at">scrollWidth =</span> <span class="fu">rep</span>(<span class="dv">1200</span>, <span class="dv">10</span>),</span>
+<span id="cb4-12"><a href="#cb4-12" tabindex="-1"></a>  <span class="at">scrollHeight =</span> <span class="fu">rep</span>(<span class="dv">1000</span>, <span class="dv">10</span>)</span>
+<span id="cb4-13"><a href="#cb4-13" tabindex="-1"></a>)</span></code></pre></div>
 </div>
 <div id="standardize-raw-data" class="section level1">
 <h1>1. Standardize raw data</h1>
@@ -491,8 +503,9 @@ listed if verbose is applied TRUE.</p>
 <p><code>convert_numeric()</code> converts commonly appearing
 numeric-like columns to numeric type. A column is treated as
 numeric-like if all of its non-missing and non-empty values can be
-converted to numeric after standardizing symbols.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a>mouse_std <span class="ot">&lt;-</span> <span class="fu">convert_numeric</span>(mouse_std)</span></code></pre></div>
+converted to numeric after standardizing symbols. If you need to exclude
+specific columns, they can be specified under <code>exclude</code>.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a>mouse_std <span class="ot">&lt;-</span> <span class="fu">convert_numeric</span>(mouse_std, <span class="at">exclude =</span> <span class="st">&quot;workerId&quot;</span>)</span></code></pre></div>
 </div>
 </div>
 <div id="filter-invalid-cases-and-events" class="section level1">
@@ -500,7 +513,13 @@ converted to numeric after standardizing symbols.</p>
 <div id="remove-invalid-cases" class="section level2">
 <h2>Remove invalid cases</h2>
 <p>Use <code>rm_cases()</code> to remove invalid participants, screens,
-or empty trajectories.</p>
+or empty trajectories. It is a filtering function. Use criteria 1 to
+remove only the screen/question ID (or a lower unit of identification)
+where the criterion is met while criteria 2 removes all data from the
+participant (or a higher unit of identification). For criteria 2, both
+screen ID as well as participant ID need to be specified. Input the
+filter column in <code>column_rm</code> and the category to be removed
+in <code>factor_rm</code>.</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a>mouse_clean <span class="ot">&lt;-</span> mouse_std <span class="sc">%&gt;%</span></span>
 <span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a>  <span class="fu">rm_cases</span>(<span class="at">column_rm =</span> <span class="st">&quot;userAgent_is_touch_capable&quot;</span>,</span>
 <span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a>           <span class="at">factor_rm =</span> <span class="cn">TRUE</span>,</span>
@@ -511,8 +530,13 @@ or empty trajectories.</p>
 </div>
 <div id="create-click-dataset" class="section level2">
 <h2>Create click dataset</h2>
-<p>If certain type of trajectories have to be subsetted, use
-<code>sl_cases</code>.</p>
+<p><code>sl_cases</code> is a function to select certain rows of the
+dataframe. If certain trajectories or screens have to be subsetted, use
+<code>sl_cases</code>. It’s another filter function that could be used
+to create new dataframes. Input the filter column in
+<code>column_sl</code> and the category to be selected in
+<code>factor_sl</code>. The illustrated example is to create a data
+object where the event type is only clicks.</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a>click_df <span class="ot">&lt;-</span> <span class="fu">sl_cases</span>(mouse_clean, <span class="at">column_sl =</span> <span class="st">&quot;type&quot;</span>, <span class="at">factor_sl =</span> <span class="st">&quot;click&quot;</span>)</span></code></pre></div>
 </div>
 </div>
@@ -520,9 +544,14 @@ or empty trajectories.</p>
 <h1>3. Create geometry and timing features</h1>
 <div id="calculate-screen-dimensions" class="section level2">
 <h2>Calculate screen dimensions</h2>
-<p><code>screen_dims_calculate()</code> computes screen width and height
-from available inner and scroll dimensions.</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a>screen_dims_data <span class="ot">&lt;-</span> <span class="fu">calculate_screen_dims</span>(mouse_clean)</span></code></pre></div>
+<p><code>calculate_screen_dims()</code> computes screen width and screen
+height. It will rewrite the values if the columns already exist. The
+inputs used are inner height, inner width, scroll width and scroll
+height. Inner dimensions correspond to the screen visible in the browser
+while scroll dimensions are of the physical monitor. The function
+removes all rows where all the input dimensions are missing before
+applying calculations.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a>screen_dims_data <span class="ot">&lt;-</span> <span class="fu">calculate_screen_dims</span>(mouse_clean, <span class="at">uas =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 <p>If you are working with UAS-style datasets, set
 <code>uas = TRUE</code> and the function uses UAS default column names
 and defaults for selecting columns, so you can call the function with
@@ -531,8 +560,9 @@ only <code>data</code>.</p>
 <div id="calculate-timing-variables" class="section level2">
 <h2>Calculate timing variables</h2>
 <p><code>time_vars_calculate()</code> derives key timing variables from
-trajectory timestamps.</p>
-<p>The outputs include:</p>
+trajectory timestamps. The required input variables are grouping ID and
+timestamps.</p>
+<p>The output data includes:</p>
 <table>
 <thead>
 <tr class="header">
@@ -555,6 +585,9 @@ trajectory timestamps.</p>
 </tr>
 </tbody>
 </table>
+<p>These time variables are calculated by the grouping level
+(participant, screen, trajectory). The function removes missing
+timestamps before applying the calculations.</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a>time_df <span class="ot">&lt;-</span> <span class="fu">calculate_time_vars</span>(mouse_clean)</span></code></pre></div>
 </div>
 </div>
@@ -562,34 +595,34 @@ trajectory timestamps.</p>
 <h1>4. Detect and remove outliers</h1>
 <div id="remove-cases-based-on-time-spent" class="section level2">
 <h2>Remove cases based on time spent</h2>
-<p><code>rm_cases_time()</code> removes cases or participants based on
-total time spent on a question or screen.</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a>mouse_time_flag <span class="ot">&lt;-</span> <span class="fu">rm_cases_time</span>(mouse_clean, <span class="at">max_time =</span> <span class="dv">7</span>)</span></code></pre></div>
+<p><code>rm_cases_time()</code> can be used to remove cases where the
+time spent on a question exceeds a predefined threshold either at the
+participant level or at the screen (case) level. If the option to
+aggregate time at a higher grouping level (eg., participant) is chosen,
+then the grouping ID must be provided.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a>mouse_time_flag <span class="ot">&lt;-</span> <span class="fu">rm_cases_time</span>(mouse_clean, <span class="at">time_agg =</span> <span class="cn">FALSE</span>, <span class="at">part_id =</span> <span class="cn">FALSE</span>, <span class="at">screen_id =</span> <span class="st">&quot;mt_id&quot;</span>, <span class="at">max_time =</span> <span class="dv">420000</span>)</span></code></pre></div>
 </div>
 <div id="classify-mouse-movement-density" class="section level2">
 <h2>Classify mouse movement density</h2>
-<p><code>mouse_class()</code> and <code>mouse_class_col()</code> help
-identify cases with too few recorded mouse or touch movement points per
-screen.</p>
-<p>Use <code>mouse_class()</code> when you want to remove these cases
-directly. Use <code>mouse_class_col()</code> when you want to flag cases
-first and decide later whether to remove them.</p>
+<p><code>mouse_class()</code> cases with too few recorded mouse or touch
+movement points per screen as mouse move and filters the specific
+observations. There is a related function called
+<code>mouse_touch_indicator</code>which</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a>mousemove_flag <span class="ot">&lt;-</span> <span class="fu">mouse_class</span>(mouse_clean, <span class="at">max_cutoff =</span> <span class="dv">50</span>)</span>
 <span id="cb12-2"><a href="#cb12-2" tabindex="-1"></a>mousemove_remove <span class="ot">&lt;-</span> <span class="fu">mouse_class_col</span>(mouse_clean, <span class="at">max_cutoff =</span> <span class="dv">50</span>)</span></code></pre></div>
 </div>
 <div id="based-on-timing-variables" class="section level2">
 <h2>Based on timing variables</h2>
-<p><code>flag_outliers()</code> can flag unusual observations using
-data-driven rules or fixed thresholds. <code>&quot;data&quot;</code>, values are
-flagged as outliers when they are greater than the mean plus two
-standard deviation</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a>mouse_flag <span class="ot">&lt;-</span> <span class="fu">flag_outliers</span>(time_df,</span>
-<span id="cb13-2"><a href="#cb13-2" tabindex="-1"></a>    <span class="at">flag_outliers =</span> <span class="st">&quot;data&quot;</span>,</span>
-<span id="cb13-3"><a href="#cb13-3" tabindex="-1"></a>    <span class="at">filter_var =</span> <span class="st">&quot;move_time&quot;</span>)</span></code></pre></div>
+<p><code>flag_outliers()</code> can flag observations with outlier move
+time using data-driven rules or fixed thresholds. Either
+<code>data</code> or <code>threshold</code>criterion can be chosen for
+outlier identification.</p>
+<p><code>data</code>, values are flagged as outliers when they are
+greater than the mean plus two standard deviation of the calculated move
+time</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a>mouse_flag <span class="ot">&lt;-</span> <span class="fu">flag_outliers</span>(time_df,<span class="at">flag_outliers =</span> <span class="st">&quot;data&quot;</span>,<span class="at">filter_var =</span> <span class="st">&quot;move_time&quot;</span>)</span></code></pre></div>
 <p>You can also use a fixed threshold.</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a>mouse_flag <span class="ot">&lt;-</span> <span class="fu">flag_outliers</span>(time_df,</span>
-<span id="cb14-2"><a href="#cb14-2" tabindex="-1"></a>    <span class="at">flag_outliers =</span> <span class="st">&quot;threshold&quot;</span>,</span>
-<span id="cb14-3"><a href="#cb14-3" tabindex="-1"></a>    <span class="at">filter_var =</span> <span class="st">&quot;move_time&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a>mouse_flag <span class="ot">&lt;-</span> <span class="fu">flag_outliers</span>(time_df,<span class="at">flag_outliers =</span> <span class="st">&quot;threshold&quot;</span>,<span class="at">filter_var =</span> <span class="st">&quot;move_time&quot;</span>, <span class="at">outlier_threshold =</span> <span class="fl">12e4</span>)</span></code></pre></div>
 <p>Once outliers are flagged, use <code>rm_cases()</code> to remove
 them.</p>
 </div>
@@ -598,18 +631,30 @@ them.</p>
 <h1>5. Handle repeated visits and clicks</h1>
 <div id="repeated-trajectories" class="section level2">
 <h2>Repeated trajectories</h2>
-<p>Some participants may visit the same screen or question multiple
-times. <code>multiple_traj()</code> gives the option of flagging the
-whole participant if they have multiple trajectories or flag only their
-first, last, or longest trajectory.</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a>mouse_single_visit <span class="ot">&lt;-</span> <span class="fu">multiple_traj</span>(mouse_clean)</span></code></pre></div>
-<p><code>rm_cases()</code> to remove the repeated visits if needed.</p>
+<p>There may be multiple visits to the same screen or question multiple
+times. <code>multiple_traj()</code> detects such screens. It outputs a
+dataframe with two flag indicators - <code>multiple_workers</code> and
+<code>selected trajectory</code>. <code>multiple_workers</code> is TRUE
+when when a screen contains more than one trajectory and FALSE
+otherwise. <code>selected trajectory</code>TRUE for selected
+trajectories based on the criteria, FALSE for non-selected trajectories
+on screens with multiple trajectories, and for screens with only one
+trajectory.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a>mouse_single_visit <span class="ot">&lt;-</span> <span class="fu">multiple_traj</span>(mouse_clean, <span class="at">screen_id =</span> <span class="st">&quot;screen_id&quot;</span>, <span class="at">traj_id =</span> <span class="st">&quot;mt_id&quot;</span>, <span class="at">criteria =</span> <span class="st">&quot;long&quot;</span>, <span class="at">time_col =</span> <span class="st">&quot;timestamps&quot;</span> )</span></code></pre></div>
+<p>Use <code>rm_cases()</code> to remove the repeated visits if
+needed.</p>
 </div>
 <div id="include-click-data" class="section level2">
 <h2>Include click data</h2>
 <p><code>include_clicks()</code> indicates a trajectory as click by
-matching it to the nearest timestamp.</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" tabindex="-1"></a>mouse_with_clicks <span class="ot">&lt;-</span> <span class="fu">include_clicks</span>(<span class="at">dat_complete =</span> mouse_clean, <span class="at">dat_clicks =</span> click_df)</span></code></pre></div>
+matching it to the nearest timestamp and returns a dataframe with an
+indicator column for number of clicks associated with a trajectory
+timestamp. Two dataframes have to be provided;
+<code>data_complete</code> - must include the columns specified by and
+and <code>data_clicks</code>- must include the columns specified by and
+</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" tabindex="-1"></a>mouse_with_clicks <span class="ot">&lt;-</span> <span class="fu">include_clicks</span>(<span class="at">data_complete =</span> mouse_clean, <span class="at">data_clicks =</span> click_df, <span class="at">screen_id =</span> <span class="st">&quot;mt_id&quot;</span>,</span>
+<span id="cb16-2"><a href="#cb16-2" tabindex="-1"></a>                                    <span class="at">time_col =</span> <span class="st">&quot;timestamps&quot;</span>,<span class="at">click_time_col =</span> <span class="st">&quot;timestamps&quot;</span>)</span></code></pre></div>
 <p>This is useful when you want to analyze both movement paths and final
 click behavior.</p>
 </div>

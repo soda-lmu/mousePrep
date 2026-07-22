@@ -51,14 +51,15 @@ calculate_screen_dims <- function(data,
     ))
   }
   
+  dimension_cols <- c(inner_width,inner_height,scroll_width,scroll_height)
+  
   data <- data %>%
-    filter(.data[[screen_width]] != "") %>%
+    filter(if_any(all_of(dimension_cols),~ !is.na(.x) & .x != "")) %>%
     mutate(
       !!screen_height := pmax(.data[[inner_height]], .data[[scroll_height]], na.rm = TRUE),
-      !!screen_width  := pmax(.data[[inner_width]], .data[[scroll_width]], na.rm = TRUE)
-    )
-  
-  
+      !!screen_width  := pmax(.data[[inner_width]], .data[[scroll_width]], na.rm = TRUE))
+    
+    
   data
   
 }

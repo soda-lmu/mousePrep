@@ -3,7 +3,8 @@
 #' Computes initiation time, response time, and move time for each participant
 #' or trial ID. Initiation time is the earliest timestamp within each group,
 #' response time is the latest timestamp, and move time is the difference
-#' between response time and initiation time.
+#' between response time and initiation time. Removes all the rows where timestamps
+#' are NA.
 #'
 #' @param data Any mouse trajectory data frame or tibble.
 #' @param id A character string naming the participant or trial ID column.

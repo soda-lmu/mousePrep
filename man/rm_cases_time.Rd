@@ -6,7 +6,8 @@
 \usage{
 rm_cases_time(
   data,
-  part_id = FALSE,
+  time_agg = FALSE,
+  part_id = "none",
   screen_id = "mt_id",
   time_col = "timestamps",
   max_time
@@ -14,6 +15,9 @@ rm_cases_time(
 }
 \arguments{
 \item{data}{A data frame with the mouse movement data with screen id unique for participant.}
+
+\item{time_agg}{A boolean string specifying if the time has to aggregated at the participant level or not.
+If it is marked TRUE, the participant column to aggregate timestamps must be provided.}
 
 \item{part_id}{The participant ID.}
 
@@ -32,11 +36,12 @@ either at the participant level or at the screen (case) level.
 If only a screen ID is provided, filtering is applied at the case level.
 If both participant ID and screen ID are provided,
 the whole participant is removed if at least one screen exceeds the threshold.
+If all the timestamps of a screen ID is missing, it is removed.
 }
 \details{
 This function can be used to remove cases where the time spent on a question
 exceeds a predefined threshold. It requires that a screen id doesn't occur for multiple participants.
 }
 \examples{
-rm_cases_time(df, part_id = "mouseid", screen_id = "mt_id", time_col = "timestamps", max_time = 420000)
+rm_cases_time(df, time_agg = FALSE, part_id = "mouseid", screen_id = "mt_id", time_col = "timestamps", max_time = 420000)
 }

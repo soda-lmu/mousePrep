@@ -208,12 +208,12 @@ mouse_time_flag <- rm_cases_time(mouse_clean, time_agg = FALSE, part_id = FALSE,
 
 ## Classify mouse movement density
 
-`mouse_touch_indicator` is a function that can be used to flag mouse and touch screens/devices based on the number of recorded movements. There is a numeric cutoff used to distinguish touch from mouse input. Screens with at most this number of events are classified as touch. Currently the cutoff defaults to 50. 
+`indicate_mouse_touch` is a function that can be used to flag mouse and touch screens/devices based on the number of recorded movements. There is a numeric cutoff used to distinguish touch from mouse input. Screens with at most this number of events are classified as touch. Currently the cutoff defaults to 50. 
 While, `mouse_class()` allows you to specify a minimum and maximum cutoff and outputs a filtered dataset based on the cutoff values provided.  
 
 ```{r mouse-class, eval = FALSE}
 mousemove_flag <- mouse_class(mouse_clean, min_cutoff = 10,max_cutoff = 50)
-mousemove_remove <- mouse_class_col(mouse_clean, max_cutoff = 50, traj_id = "mt_id",max_cutoff = 50,level = "screen")
+mousemove_remove <- indicate_mouse_touch(mouse_clean, max_cutoff = 50, traj_id = "mt_id",max_cutoff = 50,level = "screen")
 ```
 
 

@@ -2,43 +2,58 @@
 % Please edit documentation in R/multiple_traj.R
 \name{multiple_traj}
 \alias{multiple_traj}
-\title{Detect screen with multiple visits}
+\title{Detect screens with multiple trajectories}
 \usage{
-multiple_traj(
-  data,
-  part_id,
-  quest_id,
-  screen_id = "mt_id",
-  criteria,
-  time_col = NULL
-)
+multiple_traj(data, screen_id, traj_id, criteria, time_col = NULL)
 }
 \arguments{
-\item{data}{A (sl_cases()) data frame with only mouse movement data.}
+\item{data}{A data frame containing mouse-movement data.}
 
-\item{part_id}{The ID of the participant.}
+\item{screen_id}{Character string giving the name of the unique screen
+identifier column. A trajectory should belong to only one screen. If each
+user has only one screen, a user ID column may also be used.}
 
-\item{quest_id}{The ID of the question.}
+\item{traj_id}{Character string giving the name of the trajectory identifier
+column.}
 
-\item{screen_id}{The ID on screen level.}
-
-\item{criteria}{Character string specifying how to handle multiple
-trajectories per screen:
+\item{criteria}{Character string specifying which trajectories should be
+selected when a screen contains multiple trajectories:
 \itemize{
-\item \code{"all"} flag the complete participant if multiple trajectories are present as TRUE.
-\item \code{"first"} flag only the first recorded trajectory per screen.
-\item \code{"last"} flag only the last recorded trajectory per screen.
-\item \code{"long"} flag only the longest trajectory per screen as TRUE
-(based on the number of recorded data points).
+\item \code{"all"} selects all trajectories belonging to screens with
+multiple trajectories.
+\item \code{"first"} selects the first recorded trajectory for each
+screen with multiple trajectories.
+\item \code{"last"} selects the last recorded trajectory for each
+screen with multiple trajectories.
+\item \code{"long"} selects the trajectory with the longest duration for
+each screen with multiple trajectories, based on the range of values
+in \code{time_col}.
 }}
+
+\item{time_col}{Optional character string giving the name of the timestamp
+column. Required when \code{criteria = "long"}.}
 }
 \value{
-Initial dataframe with an indicator column names "one_obs_per_screen"
+The input data frame with two additional logical columns:
+\itemize{
+\item \code{multiple_workers}: \code{TRUE} when a screen contains more
+than one trajectory and \code{FALSE} otherwise.
+\item \code{selected_trajectory}: \code{TRUE} for selected trajectories,
+\code{FALSE} for non-selected trajectories on screens with multiple
+trajectories, and \code{NA} for screens with only one trajectory.
+}
+
+Rows with missing screen or trajectory identifiers are removed. When
+\code{criteria = "long"}, trajectories for which all timestamps are
+missing are also removed.
 }
 \description{
-Detecting screens with multiple visits and keep a selected screen trajectory
+Detects screens containing more than one trajectory and identifies which
+trajectory or trajectories should be selected according to the specified
+criterion.
 }
 \examples{
-new_df <- multiple_traj(df, "mouseid", "screen", "workerId", "all")
+
+new_df <- multiple_traj(data = df,screen_id = "screen",traj_id = "workerId",criteria = "long",time_col = "timestamps")
 
 }

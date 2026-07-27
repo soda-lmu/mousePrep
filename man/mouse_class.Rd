@@ -2,42 +2,60 @@
 % Please edit documentation in R/mouse_class.R
 \name{mouse_class}
 \alias{mouse_class}
-\title{Filter mouse movement cases by number of recorded data points}
+\title{Filter trajectories/screens by number of recorded movement events}
 \usage{
 mouse_class(
   data,
-  screen_id = "mt_id",
+  traj_id = "mt_id",
   count_var = "timestamps",
   max_cutoff = FALSE,
   min_cutoff = FALSE
 )
 }
 \arguments{
-\item{data}{A (sl_cases()) data frame with only mouse movement data.}
+\item{data}{A data frame containing mouse- or touch-movement data.}
 
-\item{screen_id}{The grouping variable, like a screen or worker ID.}
+\item{traj_id}{Trajectory identifier column. Defaults to \code{"mt_id"}.}
 
-\item{count_var}{A column in the dataset used to count the cases per screen_id.}
+\item{count_var}{Character string giving the name of the column whose rows
+are counted within each trajectory. Defaults to \code{"timestamps"}. Missing values values are dropped.}
 
-\item{max_cutoff}{The cutoff value for mouse users.}
+\item{max_cutoff}{Numeric upper cutoff, or \code{FALSE} when no upper cutoff
+should be used.}
 
-\item{min_cutoff}{the cutoff value for touch users, should not be the same as max_cutoff.}
+\item{min_cutoff}{Numeric lower cutoff, or \code{FALSE} when no lower cutoff
+should be used.}
 }
 \value{
-An object of class \code{mouse_class}.
+A filtered data frame containing all observations belonging to
+trajectories that satisfy the specified event-count condition. If neither
+cutoff is numeric, the function returns \code{NULL}.
 }
 \description{
-This function filters participant cases based on the number of recorded
-mouse or touch movement data points per screen, using the timestamp variable.
+Counts the number of recorded movement events for each trajectory and returns
+all rows belonging to trajectories whose event counts satisfy the specified
+cutoff condition.
 }
 \details{
-If only \code{max_cutoff} is specified, ambiguous devices are removed and the
-filtered dataset is returned.
-If both \code{min_cutoff} and \code{max_cutoff} are specified, cases within the
-specified range are returned for further inspection.
-If only \code{min_cutoff} is specified, only ambiguous device cases are returned.
+The filtering rule depends on which cutoff values are supplied:
+\itemize{
+\item When only \code{max_cutoff} is numeric, trajectories with at least
+\code{max_cutoff} events are returned.
+\item When both \code{min_cutoff} and \code{max_cutoff} are numeric,
+trajectories with more than \code{min_cutoff} and fewer than
+\code{max_cutoff} events are returned.
+\item When only \code{min_cutoff} is numeric, trajectories with at most
+\code{min_cutoff} events are returned.
+}
+
+The returned object contains the original rows for the matching trajectories, not
+only the trajectorie identifiers or event counts.
 }
 \examples{
-df_mv <- sl_cases(df, column_sl = "type", factor_sl = "mousemove")
-df_mv <- mouse_class(df_mv, max_cutoff = 50, min_cutoff = 10)
+df_mv <- sl_cases(df,column_sl = "type",factor_sl = "mousemove" )
+# Screens with at least 50 events
+mouse_cases <- mouse_class(df_mv, max_cutoff = 50)
+# Trajectories with more than 10 and fewer than 50 events
+intermediate_cases <- mouse_class(df_mv,min_cutoff = 10,max_cutoff = 50)
+
 }

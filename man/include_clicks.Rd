@@ -2,39 +2,62 @@
 % Please edit documentation in R/include_clicks.R
 \name{include_clicks}
 \alias{include_clicks}
-\title{Include clicks to the preprocessed dataset}
+\title{Align clicks with trajectory timestamps}
 \usage{
 include_clicks(
-  dat_complete,
-  dat_clicks,
-  screen_id = "mt_id",
+  data_complete,
+  data_clicks,
+  screen_id,
   time_col = "timestamps",
   click_time_col = "timestamps",
   binary = FALSE
 )
 }
 \arguments{
-\item{dat_complete}{A data frame with the screen ID, timestamps, and repeated initiation time}
+\item{data_complete}{A data frame containing mouse movement data.
+It must include the columns specified by \code{screen_id} and
+\code{time_col}.}
 
-\item{dat_clicks}{A data frame with the screen ID and timestamps of the clicks}
+\item{data_clicks}{A data frame containing the click events. It must include
+the columns specified by \code{screen_id} and \code{click_time_col}.}
 
-\item{screen_id}{The screen or worker ID, identifies the separated screens, one participant has multiple IDs. The screen ID should be identical for both data frames.}
+\item{screen_id}{Character string giving the name of the column that
+identifies a screen or trajectory. The same identifier column must be
+present in both input data frames.}
 
-\item{time_col}{The timestamp column.}
+\item{time_col}{Character string giving the name of the timestamp column in
+\code{data_complete}. Defaults to \code{"timestamps"}.}
 
-\item{binary}{Optional to keep an indicator if there are 1 or more clicks.}
+\item{click_time_col}{Character string giving the name of the click timestamp
+column in \code{data_clicks}. Defaults to \code{"timestamps"}.}
 
-\item{type_col}{The type column for which the click dataframe can be extracted.}
-
-\item{click_label}{The factor to extract click dataframe.}
+\item{binary}{Logical. If \code{FALSE}, the \code{click} column contains the
+number of clicks assigned to each trajectory row. If \code{TRUE}, it is a
+binary indicator equal to \code{1} when at least one click was assigned and
+\code{0} otherwise. Defaults to \code{FALSE}.}
 }
 \value{
-The original data frame with an additional click column.
+A data frame containing one row per distinct combination of
+\code{screen_id} and \code{time_col}, together with:
+\itemize{
+\item \code{initiation_time}: the minimum timestamp within the screen.
+\item \code{click}: the number of matched clicks, or a binary click
+indicator when \code{binary = TRUE}.
+}
 }
 \description{
-This function takes the data, timestamps, initiation time, and click times, and adds a column indicating clicks using one-hot encoding.
-Clicks are aligned to the closest available timestamp. As a result, the original click data frame and the resulting data frame may differ in row count.
+Matches click events to the nearest available timestamp within the same
+screen or trajectory and adds a click-count column to the preprocessed
+trajectory data.
+}
+\details{
+For each click, the function finds the trajectory timestamp with the smallest
+absolute time difference. Multiple clicks may be assigned to the same
+trajectory row. Because duplicate timestamps are removed before matching,
+the returned data may contain fewer rows than \code{data_complete}.
 }
 \examples{
-click_data <- include_clicks(df_complete, df_click, click_column = "timestamps")
+click_data <- include_clicks(data_complete = df_complete,data_clicks = df_clicks,screen_id = "mt_id",
+time_col = "timestamps",click_time_col = "timestamps")
+
 }
